@@ -1,4 +1,4 @@
-import { Button } from "./button";
+import { Button } from "./Button";
 import Logo from "./logo";
 import Link from "next/link";
 import Image from "next/image";
@@ -18,7 +18,7 @@ const Header = () => {
               <Image src="/profile.svg" alt="Profile" width={40} height={40} />
             </Link>
             <Link href="/login">
-              <Button variant="outline" size="sm">
+              <Button style="fill" size="xl">
                 Sign In
               </Button>
             </Link>

@@ -10,7 +10,7 @@ const footerLinks = [
 
 const Footer = () => {
   return (
-    <footer className="min-h-screen w-full bg-[var(--gray-50)]  text-sm flex justify-around px-[60px] py-[140px]">
+    <footer className="w-full bg-[var(--gray-50)]  text-sm flex justify-around px-[60px] py-[140px] mt-auto">
       <div className="flex flex-col gap-y-[24px] flex-1 basis-0">
         <Logo />
         <p className="text-[var(--neutral-600)] font-medium ">

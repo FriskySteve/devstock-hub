@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Button } from "./button";
+import { Button } from "../Button";
 
 type Category = {
   id: number;
   name: string;
-  desc: string;
-  img: string;
+  description: string;
+  imageUrl: string;
 };
 
 type CarouselProps = {
@@ -31,24 +31,31 @@ export default function Carousel({ categories }: CarouselProps) {
     <div className="relative py-8  mx-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-[var(--gray-50)]">
         {/* Lewa kolumna: tekst */}
-        <div className="flex flex-col flex-1 justify-center pl-30 text-left sm:text-center">
-          <h2 className="text-3xl font-semibold text-white mb-4">
+        <div className="flex flex-col flex-1 justify-center pl-30 md:text-left sm:text-center md:items-start sm:items-center">
+          <h2 className="text-3xl font-semibold text-[var(--neutral-900)] mb-4">
             {current.name}
           </h2>
-          <p className="text-gray-400 pb-10 pt-2">{current.desc}</p>
+          <p className="text-[var(--neutral-600)] pb-10 pt-2">
+            {current.description}
+          </p>
           {/* TODO poprawic button */}
-          <Button>Explore Category</Button>
+          <Button style="stroke" size="l">
+            Explore Category
+          </Button>
         </div>
 
         {/* Prawa kolumna: obrazek */}
         {/* TODO dopasowac prawy margin */}
-        <div className="h-80 relative overflow-hidden mr-8">
-          <Image
-            src={current.img}
-            alt={current.name}
-            fill
-            className="object-cover rounded-xl rotate-[34.55deg]"
-          />
+        <div className="h-80 relative justify-items-center overflow-hidden mx-[60px] md:mr-[120px]">
+          {current.imageUrl ? (
+            <Image
+              src={current.imageUrl}
+              alt={current.name}
+              fill
+              sizes="900px"
+              className="object-cover rounded-xl rotate-[-34.55deg]"
+            />
+          ) : null}
         </div>
       </div>
 
