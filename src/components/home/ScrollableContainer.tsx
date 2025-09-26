@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useRef, useState, useEffect, ReactNode } from "react";
-import { Button } from "./Button";
-import LittleCard from "../components/LittleCard";
-import ProductCard from "./ProductCard";
+import { Button } from "../Button";
+import LittleCard from "../../components/LittleCard";
+import ProductCard from "../ProductCard";
 import { Brand } from "@/lib/types";
 import { Product } from "@/lib/types";
-import ArrowRight from "./icons/ArrowRight";
-import ArrowLeft from "./icons/ArrowLeft";
+import ArrowRight from "../icons/ArrowRight";
+import ArrowLeft from "../icons/ArrowLeft";
 
 type ScrollableContainerProps = {
   title: string;
@@ -98,7 +98,7 @@ export default function ScrollableContainer({
       </div>
       <div
         ref={scrollRef}
-        className="flex flex-row gap-8 overflow-x-auto flex-nowrap py-2"
+        className="flex flex-row gap-8 overflow-x-auto flex-nowrap py-2 scrollbar-hide"
       >
         {content}
       </div>

@@ -1,6 +1,6 @@
 import Carousel from "@/components/home/Carousel";
 import CategoryContainer from "@/components/home/CategoryContainer";
-import ScrollableContainer from "@/components/ScrollableContainer";
+import ScrollableContainer from "@/components/home/ScrollableContainer";
 import { getData } from "@/components/services/getData";
 import { shuffle } from "@/lib/utils";
 
@@ -11,7 +11,7 @@ export default async function Home() {
   const shuffledRandomProducts = shuffle(recommendedProductsData.products);
 
   return (
-    <div>
+    <div className=" pb-[80px]">
       <Carousel categories={categoriesData.categories} />
       <CategoryContainer categories={categoriesData.categories} />
       <ScrollableContainer
