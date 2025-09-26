@@ -38,6 +38,7 @@ interface ButtonProps
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   asChild?: boolean;
+  // onClick?: () => void;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -49,6 +50,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       leftIcon,
       rightIcon,
       children,
+      onClick,
       asChild = false,
       ...props
     },
@@ -61,6 +63,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         data-slot="button"
         className={cn(buttonVariants({ style, size, className }))}
+        onClick={onClick}
         {...props}
       >
         {leftIcon}

@@ -1,3 +1,5 @@
+import React from "react";
+import ScrollableContainer from "../ScrollableContainer";
 import LittleCard from "../LittleCard";
 
 type Brand = {
@@ -10,18 +12,17 @@ type BrandsContainerProps = {
 };
 
 export default function BrandsContainer({ brands }: BrandsContainerProps) {
+  const memoBrands = React.useMemo(() => brands, [brands]);
+
   return (
     <div className="flex flex-col px-10 gap-8">
-      <h4 className="text-xl font-medium text-[var(--neutral-900)]">Brands</h4>
-      <div className="flex md:flex-row sm:flex-col md:justify-between sm:justify-center">
-        {brands.map((brand) => (
-          <LittleCard
-            key={brand.name}
-            name={brand.name}
-            iconUrl={brand.logoUrl}
-          />
+      <ScrollableContainer title="Brands">
+        {memoBrands.map((brand) => (
+          <div key={brand.name} className="w-[260px] shrink-0">
+            <LittleCard name={brand.name} iconUrl={brand.logoUrl} />
+          </div>
         ))}
-      </div>
+      </ScrollableContainer>
     </div>
   );
 }
