@@ -1,5 +1,9 @@
 import Logo from "./logo";
-import Image from "next/image";
+import VisaIcon from "./icons/VisaIcon";
+import MasterCardIcon from "./icons/MasterCardIcon";
+import PayPalIcon from "./icons/PayPalIcon";
+import ApplePayIcon from "./icons/ApplePayIcon";
+import GooglePayIcon from "./icons/GooglePayIcon";
 
 const footerLinks = [
   { title: "Company", links: ["About Us", "Contact", "Partner"] },
@@ -11,18 +15,17 @@ const footerLinks = [
 const Footer = () => {
   return (
     <footer className="w-full bg-[var(--gray-50)]  text-sm flex justify-around px-[60px] py-[140px] mt-auto">
-      <div className="flex flex-col gap-y-[24px] flex-1 basis-0">
+      <div className="flex flex-col justify-center gap-y-[24px] flex-1 basis-0">
         <Logo />
         <p className="text-[var(--neutral-600)] font-medium ">
           © 2023 DevStockHub. All rights reserved.
         </p>
-        <div className="flex gap-3">
-          {/* TODO zamienic obrazki na obrazki platnosci */}
-          <Image src="/cart.svg" alt="Cart" width={24} height={24} />
-          <Image src="/cart.svg" alt="Cart" width={24} height={24} />
-          <Image src="/cart.svg" alt="Cart" width={24} height={24} />
-          <Image src="/cart.svg" alt="Cart" width={24} height={24} />
-          <Image src="/cart.svg" alt="Cart" width={24} height={24} />
+        <div className="flex justify-around gap-3 sm:justify-start">
+          <VisaIcon />
+          <MasterCardIcon />
+          <PayPalIcon />
+          <ApplePayIcon />
+          <GooglePayIcon />
         </div>
       </div>
       <div className="flex-2 grid grid-cols-1 gap-6 text-sm sm:grid-cols-2 sm:gap-8 md:grid-cols-4">

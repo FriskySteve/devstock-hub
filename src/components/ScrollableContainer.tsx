@@ -3,22 +3,22 @@
 import React, { useRef, useState, useEffect, ReactNode } from "react";
 import { Button } from "./Button";
 import LittleCard from "../components/LittleCard";
-
-type Brand = {
-  name: string;
-  logoUrl: string;
-};
+import ProductCard from "./ProductCard";
+import { Brand } from "@/lib/types";
+import { Product } from "@/lib/types";
+import ArrowRight from "./icons/ArrowRight";
+import ArrowLeft from "./icons/ArrowLeft";
 
 type ScrollableContainerProps = {
   title: string;
   children?: ReactNode;
-  brands: Brand[];
+  items: (Brand | Product)[];
 };
 
 export default function ScrollableContainer({
   title,
   children,
-  brands,
+  items,
 }: ScrollableContainerProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showStart, setShowStart] = useState(false);
@@ -61,6 +61,22 @@ export default function ScrollableContainer({
     }
   };
 
+  let content;
+  if (title === "Brands") {
+    content = (items as Brand[]).map((item) => (
+      <div key={item.name} className="w-[220px] ">
+        <LittleCard name={item.name} iconUrl={item.logoUrl} />
+      </div>
+    ));
+  } else {
+    console.log("items", items);
+    content = (items as Product[]).map((item) => (
+      <div key={item.id} className="w-[300px] ">
+        <ProductCard data={item} />
+      </div>
+    ));
+  }
+
   return (
     <div className="px-10">
       <div className="flex justify-between items-center">
@@ -69,14 +85,13 @@ export default function ScrollableContainer({
         </h4>
         <div className="flex gap-4 mt-4">
           {showStart && (
-            // TODO dodac ikone strzalki
             <Button size={"l"} style={"text"} onClick={scrollToStart}>
-              Scroll to Start
+              See less <ArrowLeft />
             </Button>
           )}
           {showEnd && (
             <Button size={"l"} style={"text"} onClick={scrollToEnd}>
-              Scroll to End
+              See all <ArrowRight />
             </Button>
           )}
         </div>
@@ -85,11 +100,7 @@ export default function ScrollableContainer({
         ref={scrollRef}
         className="flex flex-row gap-8 overflow-x-auto flex-nowrap py-2"
       >
-        {brands.map((brand) => (
-          <div key={brand.name} className="w-[260px] ">
-            <LittleCard name={brand.name} iconUrl={brand.logoUrl} />
-          </div>
-        ))}
+        {content}
       </div>
     </div>
   );

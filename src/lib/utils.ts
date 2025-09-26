@@ -1,6 +1,16 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
+}
+
+export function shuffle(items: []) {
+  const shuffledItems = items
+    .map((p) => ({ sort: Math.random(), value: p }))
+    .sort((a, b) => a.sort - b.sort)
+    .map((a) => a.value);
+
+  const slicedItems = shuffledItems.slice(0, 6);
+  return slicedItems;
 }

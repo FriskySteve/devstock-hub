@@ -2,6 +2,7 @@ import { Button } from "./Button";
 import Logo from "./logo";
 import Link from "next/link";
 import Image from "next/image";
+import CartIcon from "./icons/CartIcon";
 
 const Header = () => {
   return (
@@ -11,8 +12,8 @@ const Header = () => {
           <Logo />
           <div className="flex justify-center items-center gap-7">
             {/* TODO dodac logike odpowiadajaca za zmiane ikonki koszyka i profilu jezeli uzytkownik jest zalogowany */}
-            <Link href="/cart">
-              <Image src="/cart.svg" alt="Cart" width={24} height={24} />
+            <Link href="/cart" className="text-[var(--neutral-900)]">
+              <CartIcon />
             </Link>
             <Link href="/profile">
               <Image src="/profile.svg" alt="Profile" width={40} height={40} />
