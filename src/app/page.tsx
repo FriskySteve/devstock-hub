@@ -11,7 +11,7 @@ export default async function Home() {
   const shuffledRandomProducts = shuffle(recommendedProductsData.products);
 
   return (
-    <div className=" pb-[80px]">
+    <div className="flex flex-col gap-[80px] pb-[80px]">
       <Carousel categories={categoriesData.categories} />
       <CategoryContainer categories={categoriesData.categories} />
       <ScrollableContainer
