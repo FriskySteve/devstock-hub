@@ -1,5 +1,3 @@
-"use client";
-
 import LittleCard from "../LittleCard";
 
 type Category = {
@@ -26,7 +24,6 @@ export default function CategoryContainer({
             key={category.name}
             name={category.name}
             iconUrl={category.iconUrl}
-            logoUrl={category.iconUrl}
           />
         ))}
       </div>

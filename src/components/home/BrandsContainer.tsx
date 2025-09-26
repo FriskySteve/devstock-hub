@@ -1,5 +1,3 @@
-"use client";
-
 import LittleCard from "../LittleCard";
 
 type Brand = {
