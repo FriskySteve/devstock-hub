@@ -789,9 +789,9 @@ async function main() {
         price: 19.99,
         stock: 3,
         images: [
-          "https://i.ibb.co/7Qz8V8y/logitech-c920.png",
           "https://i.ibb.co/FLSFTWqm/WH1000-XM6.webp",
           "https://i.ibb.co/RpSPWgjX/WH1000-XM6-front.webp",
+          "https://i.ibb.co/Kc6J17PP/WH1000-XM6-side.webp",
         ],
         brandId: 6,
         categoryId: 3,
