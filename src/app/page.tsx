@@ -1,6 +1,7 @@
 import BrandsContainer from "@/components/home/BrandsContainer";
 import Carousel from "@/components/home/Carousel";
 import CategoryContainer from "@/components/home/CategoryContainer";
+import ScrollableContainer from "@/components/ScrollableContainer";
 import { getData } from "@/components/services/getData";
 
 export default async function Home() {
@@ -12,7 +13,8 @@ export default async function Home() {
     <div>
       <Carousel categories={categoriesData.categories} />
       <CategoryContainer categories={categoriesData.categories} />
-      <BrandsContainer brands={brandsData.brands} />
+      {/* <BrandsContainer brands={brandsData.brands} /> */}
+      <ScrollableContainer brands={brandsData.brands} title="Brands" />
     </div>
   );
 }
