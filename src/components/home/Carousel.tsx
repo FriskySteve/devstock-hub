@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Button } from "../Button";
 import GreaterThenIcon from "../icons/GreaterThenIcon";
 import LessThenIcon from "../icons/LessThenIcon";
+import RightArrow from "../icons/ArrowRight";
 
 type Category = {
   id: number;
@@ -39,12 +40,11 @@ export default function Carousel({ categories }: CarouselProps) {
           <p className="text-[var(--neutral-600)] pb-10 pt-2">
             {current.description}
           </p>
-          {/* TODO poprawic button */}
           <Button style="stroke" size="l">
-            Explore Category
+            Explore Category <RightArrow />
           </Button>
         </div>
-        {/* TODO dopasowac prawy margin */}
+        {/* TODO dodac funkcje do przkierowywania do guzika */}
         <div className="h-80 relative justify-items-center overflow-hidden mx-[60px] md:mr-[120px]">
           {current.imageUrl ? (
             <Image
