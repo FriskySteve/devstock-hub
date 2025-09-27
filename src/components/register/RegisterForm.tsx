@@ -13,11 +13,19 @@ import { FormInput } from "./FormInput";
 import { PasswordInput } from "./PasswordInput";
 import { CountrySelect } from "./CountrySelect";
 import { CheckboxWithText } from "./CheckBoxWithText";
-import Logo from "../logo";
+import { useRouter } from "next/navigation";
+import useFetch from "@/hooks/useFetch";
+
+type RegisterResponse = {
+  success: boolean;
+  message?: string;
+};
 
 export default function CreateAccountForm() {
   const passwordVisibility = usePasswordVisibility();
   const confirmPasswordVisibility = usePasswordVisibility();
+  const { postData, error, setError } = useFetch<RegisterResponse>(null);
+  const router = useRouter();
 
   const {
     register,
@@ -31,13 +39,25 @@ export default function CreateAccountForm() {
     },
   });
 
-  const onSubmit = (data: CreateAccountFormData) => {
-    console.log("Form submitted:", data);
-    // Handle form submission here
+  const onSubmit = async (data: CreateAccountFormData) => {
+    try {
+      const response = await postData("/api/register", data);
+      setError(null);
+      if (error) {
+        console.error("Registration error:", error);
+      } else if (response?.success) {
+        console.log("Registration successful:", response);
+        router.push("/register/success");
+      } else {
+        console.error("Registration failed:", response?.message);
+      }
+    } catch (error) {
+      console.error("Error during form submission:", error);
+    }
   };
 
   return (
-    <div className="max-w-md mx-auto bg-[#2a2a2a] border border-gray-600 rounded-lg p-6">
+    <div className="max-w-md mx-auto bg-[var(--base-white)] border border-[var(--(gray-200)] rounded-lg p-6">
       <h2 className="text-[24px] font-medium text-[var(--neutral-900)] mb-8 border-b border-b-[var(--gray-200)] pb-[20px]">
         Create Account
       </h2>
