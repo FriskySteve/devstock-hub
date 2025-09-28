@@ -16,7 +16,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
       {" "}
       <div className="w-[300px] h-[386px] pt-[16px] pb-[20px] px-[16px] bg-[var(--base-white)] border rounded-md border-[var(--gray-200)] flex flex-col relative">
         <div
-          // onClick={() => addItemToCart(data.id)}
+          onClick={() => addItemToCart(data.id)}
           className="text-[var(--neutral-900)] absolute top-8 left-8 z-10 flex h-8 w-8 items-center justify-center rounded-md bg-[var(--base-white)] hover:text-[var(--blaze-orange-50)]"
         >
           <CartIcon />

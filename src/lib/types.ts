@@ -23,14 +23,6 @@ export type Brand = {
   logoUrl: string;
 };
 
-// export type User = {
-//   email: string;
-//   phone: string;
-//   password: string;
-//   country: string;
-//   createdAt: Date;
-// };
-
 export interface User {
   id: string;
   email: string;

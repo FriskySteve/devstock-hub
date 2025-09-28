@@ -94,7 +94,7 @@ const Detailer = ({ stock, price, id }: DetailerProps) => {
         style="stroke"
         size="xxl"
       >
-        Add to Cart, Id: {id}
+        Add to Cart
         <CartIcon />
       </Button>
     </div>

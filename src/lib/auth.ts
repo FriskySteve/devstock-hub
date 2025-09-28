@@ -68,8 +68,8 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.sub = user.id; // Używaj sub zamiast id
-        token.id = user.id; // Zachowaj id dla kompatybilności
+        token.sub = user.id;
+        token.id = user.id;
         token.name = user.name;
         token.email = user.email;
       }
@@ -77,7 +77,7 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (token) {
-        session.user.id = (token.sub as string) || (token.id as string); // Fallback na id
+        session.user.id = (token.sub as string) || (token.id as string);
         session.user.name = token.name as string;
         session.user.email = token.email as string;
       }
@@ -89,76 +89,3 @@ export const authOptions: NextAuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
-// export const authOptions: NextAuthOptions = {
-//   providers: [
-//     CredentialsProvider({
-//       name: "credentials",
-//       credentials: {
-//         emailOrMobile: { label: "Email or mobile phone number", type: "text" },
-//         password: { label: "Password", type: "password" },
-//       },
-//       async authorize(credentials) {
-//         if (!credentials?.emailOrMobile || !credentials?.password) {
-//           return null;
-//         }
-
-//         try {
-//           const response = await fetch(
-//             `${process.env.NEXTAUTH_URL}/api/auth/login`,
-//             {
-//               method: "POST",
-//               headers: { "Content-Type": "application/json" },
-//               body: JSON.stringify({
-//                 emailOrMobile: credentials.emailOrMobile,
-//                 password: credentials.password,
-//               }),
-//             }
-//           );
-
-//           if (!response.ok) {
-//             const text = await response.text();
-//             return null;
-//           }
-
-//           const result = await response.json();
-
-//           if (!result?.user?.id) {
-//             return null;
-//           }
-
-//           return {
-//             id: result.user.id,
-//             email: result.user.email,
-//           };
-//         } catch (error) {
-//           return null;
-//         }
-//       },
-//     }),
-//   ],
-//   pages: {
-//     signIn: "/login",
-//   },
-//   callbacks: {
-//     async jwt({ token, user }) {
-//       if (user) {
-//         token.id = user.id;
-//         token.name = user.name;
-//         token.email = user.email;
-//       }
-//       return token;
-//     },
-//     async session({ session, token }) {
-//       if (token) {
-//         session.user.id = token.id as string;
-//         session.user.name = token.name;
-//         session.user.email = token.email;
-//       }
-//       return session;
-//     },
-//   },
-//   session: {
-//     strategy: "jwt",
-//   },
-//   secret: process.env.NEXTAUTH_SECRET,
-// };
