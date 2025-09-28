@@ -42,7 +42,7 @@ export default function Carousel({ categories }: CarouselProps) {
             {current.description}
           </p>
           <Link key={current.id} href={`/product?categoryId=${current.id}`}>
-            <Button style="stroke" size="l">
+            <Button variant="stroke" size="l">
               Explore Category <RightArrow />
             </Button>
           </Link>

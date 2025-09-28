@@ -32,7 +32,7 @@ const Header = () => {
                   </div>
                 </Link>
                 <Button
-                  style={"fill"}
+                  variant="fill"
                   size={"xl"}
                   onClick={() => signOut({ callbackUrl: "/login" })}
                 >
@@ -41,7 +41,7 @@ const Header = () => {
               </>
             ) : (
               <Link href="/login">
-                <Button style="fill" size="xl">
+                <Button variant="fill" size="xl">
                   Sign In
                 </Button>
               </Link>

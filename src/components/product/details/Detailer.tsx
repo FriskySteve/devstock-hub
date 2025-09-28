@@ -91,7 +91,7 @@ const Detailer = ({ stock, price, id }: DetailerProps) => {
       </div>
       <Button
         onClick={() => addItemToCart(id, quantity)}
-        style="stroke"
+        variant="stroke"
         size="xxl"
       >
         Add to Cart

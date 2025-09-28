@@ -98,7 +98,7 @@ export default function ProfilePage() {
             </div>
             <Button
               onClick={handleSignOut}
-              style={"fill"}
+              variant="fill"
               size={"l"}
               className="w-full"
             >

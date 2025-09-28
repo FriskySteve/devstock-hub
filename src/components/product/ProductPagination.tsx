@@ -34,13 +34,13 @@ const Pagination = ({ page, totalPages, url }: PaginationProps) => {
       </div>
       <div className="flex gap-x-[32px]">
         <Link href={`${url}&page=${page > 1 ? page - 1 : 1}`}>
-          <Button style="stroke" size="m">
+          <Button variant="stroke" size="m">
             <ArrowLeftIcon />
             Previous
           </Button>
         </Link>
         <Link href={`${url}&page=${page < totalPages ? page + 1 : totalPages}`}>
-          <Button style="stroke" size="m">
+          <Button variant="stroke" size="m">
             Next
             <ArrowRightIcon />
           </Button>

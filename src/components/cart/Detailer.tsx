@@ -29,7 +29,7 @@ const Detailer = ({ totalQuantity, totalPrice }: CartDetailerProps) => {
             {totalPrice}
           </p>
         </div>
-        <Button style="fill" size="xl">
+        <Button variant="fill" size="xl">
           <p className="text-[16px] text-[var(--base-white)]  font-medium ">
             Checkout
           </p>

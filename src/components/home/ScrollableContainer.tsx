@@ -84,12 +84,12 @@ export default function ScrollableContainer({
         </h4>
         <div className="flex gap-4 mt-4">
           {showStart && (
-            <Button size={"l"} style={"text"} onClick={scrollToStart}>
+            <Button size={"l"} variant="text" onClick={scrollToStart}>
               See less <ArrowLeft />
             </Button>
           )}
           {showEnd && (
-            <Button size={"l"} style={"text"} onClick={scrollToEnd}>
+            <Button size={"l"} variant="text" onClick={scrollToEnd}>
               See all <ArrowRight />
             </Button>
           )}
