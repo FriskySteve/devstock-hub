@@ -55,7 +55,7 @@ export default function CartPage() {
     return (
       <div className="px-[40px] py-[40px]">
         <Breadcrumb />
-        <div className="flex justify-between gap-[64px] max-[1200px]:flex-col">
+        <div className="flex justify-between gap-[10px] max-[1200px]:flex-col">
           <Products
             selected={selected}
             setSelected={setSelected}

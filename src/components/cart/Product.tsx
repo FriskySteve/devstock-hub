@@ -61,15 +61,15 @@ const Product = ({
   }, [item.id, quantity, item.quantity]);
 
   return (
-    <div className="flex gap-x-[24px] items-center">
+    <div className="flex gap-x-[24px] items-center ">
       <input
         onChange={() => selectHandler()}
         checked={selected.includes(item)}
         type="checkbox"
         className="min-w-[26px] min-h-[26px]  accent-[var(--primary-500)]"
       />
-      <div className="flex flex-col p-[24px] border rounded-md border-border bg-footer min-w-full max-[1200px]:min-w-9/10">
-        <div className="flex gap-x-[32px] max-[700px]:flex-col max-[700px]:items-center">
+      <div className="flex flex-col p-[24px] border rounded-md border-border bg-footer w-full max-[1200px]:min-w-9/10 bg-[var(--base-white)]">
+        <div className="flex gap-x-[32px] max-[700px]:flex-col max-[700px]:items-center ">
           <Image
             src={item.product.images[0]}
             alt={item.product.name}
@@ -78,7 +78,7 @@ const Product = ({
             className="border rounded-md"
           />
           <div className="flex flex-col w-full">
-            <div className="flex justify-between pb-[12px]">
+            <div className="flex justify-between pb-[12px] w-[600px]">
               <p className="text-[20px] text-[var(--neutral-900)] font-medium text-wrap">
                 {item.product.name}
               </p>
