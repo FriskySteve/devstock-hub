@@ -2,6 +2,7 @@ import Detailer from "@/components/product/details/Detailer";
 import Gallery from "@/components/product/details/Gallery";
 import { Description } from "@/components/product/details/Description";
 import { getData } from "@/services/getData";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export default async function ProductDetails({
   params,
@@ -17,7 +18,9 @@ export default async function ProductDetails({
 
   return (
     <div className="p-[40px]">
-      <div></div>
+      <div>
+        <Breadcrumb productName={product.name} />
+      </div>
       <div className="flex justify-between gap-x-[32px]">
         <Gallery name={product.name} images={product.images} />
         <Description
