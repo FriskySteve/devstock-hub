@@ -3,10 +3,10 @@
 import { Button } from "./Button";
 import Logo from "./logo";
 import Link from "next/link";
-import Image from "next/image";
 import CartIcon from "./icons/CartIcon";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
+import UserIcon from "./icons/UserIcon";
 
 const Header = () => {
   const { data: session } = useSession();
@@ -27,12 +27,9 @@ const Header = () => {
                   <CartIcon />
                 </Link>
                 <Link href="/profile">
-                  <Image
-                    src="/profile.svg"
-                    alt="Profile"
-                    width={40}
-                    height={40}
-                  />
+                  <div className="text-[var(--primary-500)]">
+                    <UserIcon />
+                  </div>
                 </Link>
                 <Button
                   style={"fill"}
