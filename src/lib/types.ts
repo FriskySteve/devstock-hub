@@ -24,9 +24,11 @@ export type Brand = {
 };
 
 export interface User {
-  id: string;
+  id?: number;
+  password: string;
   email: string;
   phone: string;
+  country: string;
   createdAt: string;
   orders: Order[];
 }
@@ -63,7 +65,7 @@ export type CartItem = {
   product: {
     name: string;
     price: number;
-    imageUrls: string;
+    images: string;
     stock: number;
     category: {
       name: string;

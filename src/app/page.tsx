@@ -8,6 +8,10 @@ export default async function Home() {
   const categoriesData = await getData("/api/categories");
   const brandsData = await getData("/api/brands");
   const recommendedProductsData = await getData("/api/products/recomended");
+
+  if (!categoriesData || !brandsData || !recommendedProductsData)
+    return <p>Error while fetching data. Please wait.</p>;
+
   const shuffledRandomProducts = shuffle(recommendedProductsData.products);
 
   return (

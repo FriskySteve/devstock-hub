@@ -68,18 +68,18 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.sub = user.id;
-        token.id = user.id;
-        token.name = user.name;
-        token.email = user.email;
+        token.id = user.id ? String(user.id) : undefined;
+        token.email = String(user.email);
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
-        session.user.id = (token.sub as string) || (token.id as string);
-        session.user.name = token.name as string;
-        session.user.email = token.email as string;
+        session.user = {
+          email: String(token.email),
+          name: token.name ?? "Unkown",
+          image: token.picture ?? undefined,
+        };
       }
       return session;
     },
@@ -87,5 +87,5 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.AUTH_SECRET,
 };

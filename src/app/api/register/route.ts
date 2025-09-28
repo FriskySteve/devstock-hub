@@ -14,12 +14,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const newDate = new Date();
+
     const newUser = await UserService.createUser({
-      email,
-      password,
-      phone,
+      email: email,
+      password: password,
+      phone: phone,
       country,
-      createdAt: new Date(),
+      createdAt: String(newDate),
+      orders: [],
     });
 
     return NextResponse.json(

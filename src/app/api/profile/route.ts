@@ -14,10 +14,9 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const userIdString = session.user.id;
-    console.log("User ID from session (string):", userIdString);
+    const userEmail = session.user.email;
 
-    if (!userIdString) {
+    if (!userEmail) {
       console.log("No user ID in session");
       return NextResponse.json(
         { error: "No user ID in session" },
@@ -25,20 +24,12 @@ export async function GET() {
       );
     }
 
-    const userId = parseInt(userIdString);
-    console.log("User ID converted to int:", userId);
-
-    if (isNaN(userId)) {
-      console.log("Invalid user ID - cannot convert to integer");
-      return NextResponse.json({ error: "Invalid user ID" }, { status: 400 });
-    }
-
     console.log("Testing database connection...");
     const userCount = await prisma.user.count();
     console.log("Total users in database:", userCount);
 
     const userExists = await prisma.user.findUnique({
-      where: { id: userId },
+      where: { email: userEmail },
       select: {
         id: true,
         email: true,
@@ -58,7 +49,7 @@ export async function GET() {
       const orderCount = await prisma.order.count();
       console.log("Total orders in database:", orderCount);
     } catch (error) {
-      console.log("Orders table might not exist:", error.message);
+      console.log("Orders table might not exist:", error);
       return NextResponse.json({
         ...userExists,
         orders: [],
@@ -66,7 +57,7 @@ export async function GET() {
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: userId },
+      where: { email: userEmail },
       include: {
         orders: {
           orderBy: { createdAt: "desc" },
@@ -95,13 +86,11 @@ export async function GET() {
     return NextResponse.json(user);
   } catch (error) {
     console.error("Profile API Error:", error);
-    console.error("Error stack:", error.stack);
 
     return NextResponse.json(
       {
         error: "Failed to fetch user data",
-        details:
-          process.env.NODE_ENV === "development" ? error.message : undefined,
+        details: process.env.NODE_ENV === "development" ? error : undefined,
       },
       { status: 500 }
     );
