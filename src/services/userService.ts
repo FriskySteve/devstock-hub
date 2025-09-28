@@ -40,6 +40,7 @@ export class UserService {
 
       return user;
     } catch (error) {
+      console.log(error);
       throw new Error("Failed to create user");
     }
   }

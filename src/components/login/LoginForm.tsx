@@ -82,6 +82,7 @@ export default function CreateAccountForm() {
       }
     } catch (error) {
       setErrorMessage("Network error. Please try again.");
+      console.log(error);
       handleContinue();
       reset();
     }
