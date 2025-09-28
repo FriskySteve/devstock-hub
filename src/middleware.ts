@@ -16,20 +16,20 @@ export default withAuth(
           where: { id: token.sub },
         });
 
-        // if (!user) {
-        //   const response = NextResponse.redirect(new URL("/login", req.url));
-        //   response.cookies.delete("next-auth.session-token");
-        //   response.cookies.delete("next-auth.csrf-token");
-        //   return response;
-        // }
+        if (!user) {
+          const response = NextResponse.redirect(new URL("/login", req.url));
+          response.cookies.delete("next-auth.session-token");
+          response.cookies.delete("next-auth.csrf-token");
+          return response;
+        }
       } catch (error) {
         console.error("Error checking user existence:", error);
       }
     }
 
-    // if (token && authRoutes.some((route) => pathname.startsWith(route))) {
-    //   return NextResponse.redirect(new URL("/", req.url));
-    // }
+    if (token && authRoutes.some((route) => pathname.startsWith(route))) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
   },
   {
     callbacks: {
