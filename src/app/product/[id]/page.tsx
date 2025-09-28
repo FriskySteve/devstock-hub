@@ -9,7 +9,8 @@ export default async function ProductDetails({
 }: {
   params: { id: string };
 }) {
-  const { id } = await params;
+  const { id } = params;
+
   const { product, deliveryDay, deliveryDay2 } = await getData(
     `/api/products/${id}`
   );
