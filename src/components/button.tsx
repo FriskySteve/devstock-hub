@@ -43,17 +43,7 @@ interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    {
-      className,
-      style,
-      size,
-      leftIcon,
-      rightIcon,
-      children,
-      onClick,
-      asChild = false,
-      ...props
-    },
+    { className, style, size, children, onClick, asChild = false, ...props },
     ref
   ) => {
     const Comp = asChild ? Slot : "button";
@@ -66,9 +56,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         onClick={onClick}
         {...props}
       >
-        {leftIcon}
         {children}
-        {rightIcon}
       </Comp>
     );
   }
