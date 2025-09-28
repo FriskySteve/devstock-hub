@@ -12,6 +12,11 @@ type DetailerProps = {
 
 const Detailer = ({ stock, price }: DetailerProps) => {
   const [quantity, setQuantity] = useState<number>(1);
+  const [checked, setChecked] = useState(true);
+
+  const handleCheckBoxClick = () => {
+    setChecked((prev) => !prev);
+  };
 
   const quantityHandler = (add: boolean) => {
     if (add) {
@@ -30,9 +35,22 @@ const Detailer = ({ stock, price }: DetailerProps) => {
           Colors
         </p>
         <div className="flex gap-x-[16px]">
-          {/* TODO dodać możliwość wyboru koloru  */}
-          <div className="w-[54px] h-[54px] bg-[var(--neutral-900)] border border-border rounded-md " />
-          <div className="w-[54px] h-[54px] text-footer border border-border rounded-md " />
+          <div
+            onClick={handleCheckBoxClick}
+            className="w-[54px] h-[54px] bg-[var(--neutral-900)] border border-border rounded-md cursor-pointer flex items-center justify-center"
+          >
+            {checked && <span className="text-xl font-bold">✔</span>}
+          </div>
+          <div
+            onClick={handleCheckBoxClick}
+            className="w-[54px] h-[54px] text-footer border border-border rounded-md cursor-pointer flex items-center justify-center"
+          >
+            {!checked && (
+              <span className="text-xl font-bold text-[var(--neutral-900)]">
+                ✔
+              </span>
+            )}
+          </div>
         </div>
       </div>
       <div className="flex flex-col gap-y-[14px]">
@@ -66,7 +84,7 @@ const Detailer = ({ stock, price }: DetailerProps) => {
           Subtotal
         </p>
         <p className="text-[28px] text-[var(--neutral-900)] font-medium">
-          {(quantity * price).toFixed(2)}
+          ${(quantity * price).toFixed(2)}
         </p>
       </div>
       <Button style="stroke" size="xxl">
