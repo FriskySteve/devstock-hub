@@ -4,11 +4,11 @@ import { Description } from "@/components/product/details/Description";
 import { getData } from "@/services/getData";
 import Breadcrumb from "@/components/Breadcrumb";
 
-export default async function ProductDetails({
-  params,
-}: {
+type ProductDetailsProps = {
   params: { id: string };
-}) {
+};
+
+export default async function ProductDetails({ params }: ProductDetailsProps) {
   const { id } = params;
 
   const { product, deliveryDay, deliveryDay2 } = await getData(
