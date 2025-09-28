@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { NextResponse, NextRequest } from "next/server";
+import type { CartItem } from "@/lib/types";
 
 export async function POST(req: NextRequest) {
   try {
@@ -45,10 +46,10 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    if (!cart) return;
+    if (!cart) return; // dodatkowa ochrona
 
     const existingItem = cart.items.find(
-      (item) => item.productId === productId
+      (item: CartItem) => item.productId === productId
     );
 
     if (existingItem) {
@@ -172,7 +173,7 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ message: "Cart not found" }, { status: 404 });
     }
 
-    const item = user.cart.items.find((i) => i.id === itemId);
+    const item = user.cart.items.find((i: CartItem) => i.id === itemId);
     if (!item) {
       return NextResponse.json(
         { message: "Cart product not found" },
