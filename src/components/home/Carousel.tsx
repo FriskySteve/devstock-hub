@@ -6,6 +6,7 @@ import { Button } from "../Button";
 import GreaterThenIcon from "../icons/GreaterThenIcon";
 import LessThenIcon from "../icons/LessThenIcon";
 import RightArrow from "../icons/ArrowRight";
+import Link from "next/link";
 
 type Category = {
   id: number;
@@ -40,11 +41,12 @@ export default function Carousel({ categories }: CarouselProps) {
           <p className="text-[var(--neutral-600)] pb-10 pt-2">
             {current.description}
           </p>
-          <Button style="stroke" size="l">
-            Explore Category <RightArrow />
-          </Button>
+          <Link key={current.id} href={`/product?categoryId=${current.id}`}>
+            <Button style="stroke" size="l">
+              Explore Category <RightArrow />
+            </Button>
+          </Link>
         </div>
-        {/* TODO dodac funkcje do przkierowywania do guzika */}
         <div className="h-80 relative justify-items-center overflow-hidden mx-[60px] md:mr-[120px]">
           {current.imageUrl ? (
             <Image

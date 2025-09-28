@@ -1,6 +1,8 @@
 import LittleCard from "../LittleCard";
+import Link from "next/link";
 
 type Category = {
+  id: number;
   name: string;
   iconUrl: string;
 };
@@ -19,13 +21,13 @@ export default function CategoryContainer({
       </h4>
       <div className="flex md:flex-row flex-col md:justify-between items-center gap-8 w-full ">
         {categories.map((category) => (
-          // TODO dodac przekierwonie do kategorii
-          // <div key={category.name}>
-          <LittleCard
-            key={category.name}
-            name={category.name}
-            iconUrl={category.iconUrl}
-          />
+          <Link key={category.id} href={`/product?categoryId=${category.id}`}>
+            <LittleCard
+              key={category.name}
+              name={category.name}
+              iconUrl={category.iconUrl}
+            />
+          </Link>
         ))}
       </div>
     </div>

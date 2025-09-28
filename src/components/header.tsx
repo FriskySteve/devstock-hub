@@ -10,6 +10,11 @@ import { signOut } from "next-auth/react";
 
 const Header = () => {
   const { data: session } = useSession();
+  const handleClick = (e: React.MouseEvent) => {
+    if (!session) {
+      e.preventDefault();
+    }
+  };
   return (
     <div>
       <div className="border-b-[1px] border-b-[var(--gray-200)] mt-8 mx-10 pb-10 ">
@@ -47,14 +52,14 @@ const Header = () => {
           </div>
         </div>
         <div className="flex gap-8">
-          <Link href="/">
+          <Link onClick={handleClick} href="/">
             {" "}
             <span className="font-semibold text-base text-[var(--primary-500)]">
               Home
             </span>{" "}
           </Link>
 
-          <Link href="/product">
+          <Link onClick={handleClick} href="/product">
             {" "}
             <span className="font-medium text-base text-[var(--neutral-500)]">
               Product
