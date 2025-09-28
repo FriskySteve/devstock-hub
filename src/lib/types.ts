@@ -1,3 +1,7 @@
+import { loginSchema } from "@/schema/loginSchema";
+import { createAccountSchema } from "@/schema/createAccountSchema";
+import z from "zod";
+
 export type Product = {
   id: number;
   name: string;
@@ -20,3 +24,6 @@ export type User = {
   country: string;
   createdAt: Date;
 };
+
+export type LoginFormData = z.infer<typeof loginSchema>;
+export type CreateAccountFormData = z.infer<typeof createAccountSchema>;

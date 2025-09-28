@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { UserService } from "@/services/userService";
+import { handleError } from "@/lib/utils";
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,12 +27,6 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: error instanceof Error ? error.message : String(error),
-      },
-      { status: 400 }
-    );
+    return handleError(error);
   }
 }

@@ -32,5 +32,3 @@ export const createAccountSchema = z
     message: "Passwords do not match.",
     path: ["confirmPassword"],
   });
-
-export type CreateAccountFormData = z.infer<typeof createAccountSchema>;

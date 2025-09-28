@@ -4,10 +4,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePasswordVisibility } from "../../hooks/usePasswordVisibility";
-import {
-  createAccountSchema,
-  type CreateAccountFormData,
-} from "../../schema/createAccountSchema";
+import { createAccountSchema } from "../../schema/createAccountSchema";
+import { CreateAccountFormData } from "@/lib/types";
 import { FormField } from "./FormField";
 import { FormInput } from "./FormInput";
 import { PasswordInput } from "./PasswordInput";

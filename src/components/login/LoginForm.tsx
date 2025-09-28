@@ -3,32 +3,26 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { usePasswordVisibility } from "../../hooks/usePasswordVisibility";
-import { type CreateAccountFormData } from "../../schema/createAccountSchema";
+import { type LoginFormData } from "@/lib/types";
 import { FormField } from "../register/FormField";
 import { FormInput } from "../register/FormInput";
 import { PasswordInput } from "../register/PasswordInput";
 import { useRouter } from "next/navigation";
-import useFetch from "@/hooks/useFetch";
 import { CheckboxWithText } from "../register/CheckBoxWithText";
-
-type RegisterResponse = {
-  success: boolean;
-  message?: string;
-};
-
+import { signIn } from "next-auth/react";
 export default function CreateAccountForm() {
   const passwordVisibility = usePasswordVisibility();
-  const confirmPasswordVisibility = usePasswordVisibility();
-  const { postData, error, setError } = useFetch<RegisterResponse>(null);
   const router = useRouter();
   const [hidden, setHidden] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateAccountFormData>({
-    mode: "onChange",
+    reset,
+  } = useForm<LoginFormData>({
+    mode: "onSubmit",
   });
 
   const handleRegister = () => {
@@ -39,22 +33,61 @@ export default function CreateAccountForm() {
     setHidden(!hidden);
   };
 
-  const onSubmit = async (data: CreateAccountFormData) => {
-    console.log("Tutaj", data);
-    // try {
-    //   const response = await postData("/api/register", data);
-    //   setError(null);
-    //   if (error) {
-    //     console.error("Login error:", error);
-    //   } else if (response?.success) {
-    //     console.log("Login successful:", response);
-    //     router.push("/home");
-    //   } else {
-    //     console.error("Login failed:", response?.message);
-    //   }
-    // } catch (error) {
-    //   console.error("Error during form submission:", error);
-    // }
+  const handleLoginSubmit = (data: LoginFormData) => {
+    if (!data.emailOrMobile) {
+      setErrorMessage("Please enter your email or mobile.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]{9,15}$/;
+    if (
+      !emailRegex.test(data.emailOrMobile) &&
+      !phoneRegex.test(data.emailOrMobile)
+    ) {
+      setErrorMessage("Email or Phone Number is not valid.");
+      return;
+    }
+
+    setErrorMessage(null);
+    handleContinue();
+    reset({ emailOrMobile: data.emailOrMobile, password: "" });
+  };
+
+  const handlePasswordSubmit = async (data: LoginFormData) => {
+    setErrorMessage(null);
+
+    if (!data.password) {
+      setErrorMessage("Please enter your password.");
+      return;
+    }
+
+    try {
+      console.log("Tutaj", data.emailOrMobile);
+      console.log("Tutaj", data.password);
+      const result = await signIn("credentials", {
+        emailOrMobile: data.emailOrMobile,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setErrorMessage("Email/Phone Number or Password Incorrect");
+        handleContinue();
+        reset();
+        return;
+      }
+
+      if (result?.ok) {
+        router.push("/");
+        router.refresh();
+      }
+    } catch (error) {
+      setErrorMessage("Network error. Please try again.");
+      console.log(error);
+      handleContinue();
+      reset();
+    }
   };
 
   return (
@@ -63,18 +96,22 @@ export default function CreateAccountForm() {
         Sign in
       </h2>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        onSubmit={handleSubmit(
+          hidden ? handleLoginSubmit : handlePasswordSubmit
+        )}
+        className="space-y-6"
+      >
         {hidden && (
           <div className="space-y-6">
             <FormField
               label="Email or mobile phone number"
-              error={errors.email?.message}
+              error={errorMessage}
             >
               <FormInput
-                register={register("email")}
-                type="email"
+                register={register("emailOrMobile")}
+                type="text"
                 placeholder="Email or mobile phone number"
-                hasError={!!errors.email}
               />
             </FormField>
 
@@ -112,7 +149,7 @@ export default function CreateAccountForm() {
             </FormField>
 
             <div className="flex items-center justify-between w-full ">
-              <CheckboxWithText register={register("accept")}>
+              <CheckboxWithText>
                 <span className="text-[16px] font-normal text-[var(--neutral-600)] leading-relaxed">
                   Save password
                 </span>

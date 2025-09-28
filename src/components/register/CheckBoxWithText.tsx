@@ -2,7 +2,7 @@ import React from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 
 interface CheckboxWithTextProps {
-  register: UseFormRegisterReturn;
+  register?: UseFormRegisterReturn;
   children: React.ReactNode;
 }
 

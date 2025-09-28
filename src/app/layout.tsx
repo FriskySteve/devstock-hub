@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import SessionProv from "@/components/SessionProv";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -24,9 +25,11 @@ export default function RootLayout({
       <body
         className={`${inter.className} antialiased bg-[var(--base-white-2)] min-h-screen mx-auto  flex flex-col max-w-[1440px]`}
       >
-        <Header />
-        {children}
-        <Footer />
+        <SessionProv>
+          <Header />
+          {children}
+          <Footer />
+        </SessionProv>
       </body>
     </html>
   );
