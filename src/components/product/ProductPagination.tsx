@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { Button } from "../Button";
+import { Button } from "@/components/Button";
 import ArrowLeftIcon from "@/components/icons/ArrowLeft";
 import ArrowRightIcon from "@/components/icons/ArrowRight";
 

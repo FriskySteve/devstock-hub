@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect, ReactNode } from "react";
-import { Button } from "../Button";
+import { Button } from "@/components/Button";
 import LittleCard from "../../components/LittleCard";
 import ProductCard from "../ProductCard";
 import { Brand } from "@/lib/types";
