@@ -11,6 +11,12 @@ export type Product = {
   images: string[];
   category: { name: string };
 };
+export type Category = {
+  id: number;
+  name: string;
+  description: string;
+  imageUrl: string;
+};
 
 export type Brand = {
   name: string;

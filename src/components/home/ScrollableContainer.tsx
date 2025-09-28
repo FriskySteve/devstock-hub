@@ -69,7 +69,6 @@ export default function ScrollableContainer({
       </div>
     ));
   } else {
-    console.log("items", items);
     content = (items as Product[]).map((item) => (
       <div key={item.id} className="w-[300px] ">
         <ProductCard data={item} />
