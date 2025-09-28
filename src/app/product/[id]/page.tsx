@@ -29,7 +29,11 @@ export default async function ProductDetails({
           deliveryDay={deliveryDay}
           deliveryDay2={deliveryDay2}
         />
-        <Detailer stock={product.stock} price={product.price} />
+        <Detailer
+          id={parseInt(id)}
+          stock={product.stock}
+          price={product.price}
+        />
       </div>
     </div>
   );

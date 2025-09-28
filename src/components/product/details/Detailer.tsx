@@ -4,13 +4,15 @@ import { Button } from "@/components/Button";
 import MinusIcon from "@/components/icons/MinusIcon";
 import PlusIcon from "@/components/icons/PlusIcon";
 import CartIcon from "@/components/icons/CartIcon";
+import { addItemToCart } from "@/services/addItemToCart";
 
 type DetailerProps = {
   stock: number;
   price: number;
+  id: number;
 };
 
-const Detailer = ({ stock, price }: DetailerProps) => {
+const Detailer = ({ stock, price, id }: DetailerProps) => {
   const [quantity, setQuantity] = useState<number>(1);
   const [checked, setChecked] = useState(true);
 
@@ -87,8 +89,12 @@ const Detailer = ({ stock, price }: DetailerProps) => {
           ${(quantity * price).toFixed(2)}
         </p>
       </div>
-      <Button style="stroke" size="xxl">
-        Add to Cart
+      <Button
+        onClick={() => addItemToCart(id, quantity)}
+        style="stroke"
+        size="xxl"
+      >
+        Add to Cart, Id: {id}
         <CartIcon />
       </Button>
     </div>
