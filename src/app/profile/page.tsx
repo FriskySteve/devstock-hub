@@ -7,7 +7,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { User } from "@/lib/types";
 import UserIcon from "@/components/icons/UserIcon";
 import OrderIcon from "@/components/icons/OrderIcon";
-import { Button } from "@/components/Button";
+import Button from "@/components/Button";
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
