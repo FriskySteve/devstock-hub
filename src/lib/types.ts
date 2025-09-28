@@ -23,13 +23,44 @@ export type Brand = {
   logoUrl: string;
 };
 
-export type User = {
+// export type User = {
+//   email: string;
+//   phone: string;
+//   password: string;
+//   country: string;
+//   createdAt: Date;
+// };
+
+export interface User {
+  id: string;
   email: string;
   phone: string;
-  password: string;
-  country: string;
-  createdAt: Date;
-};
+  createdAt: string;
+  orders: Order[];
+}
+
+export interface Order {
+  id: string;
+  userId: string;
+  total: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  items: OrderItem[];
+}
+
+export interface OrderItem {
+  id: string;
+  orderId: string;
+  productId: string;
+  quantity: number;
+  price: number;
+  product: {
+    id: string;
+    name: string;
+    imageUrl?: string;
+  };
+}
 
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type CreateAccountFormData = z.infer<typeof createAccountSchema>;
