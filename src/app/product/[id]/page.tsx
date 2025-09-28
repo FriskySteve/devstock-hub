@@ -14,8 +14,6 @@ export default async function ProductDetails({
     `/api/products/${id}`
   );
 
-  console.log("Page: ", product);
-
   return (
     <div className="p-[40px]">
       <div>

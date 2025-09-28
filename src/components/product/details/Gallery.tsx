@@ -8,7 +8,6 @@ type GalleryProps = {
 };
 
 const Gallery = ({ images, name }: GalleryProps) => {
-  console.log("Tutaj!: ", images[0]);
   const [mainImg, setMainImg] = useState<string>(images[0]);
   return (
     <div className="flex flex-col gap-y-[32px]">

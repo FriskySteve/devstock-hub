@@ -38,7 +38,7 @@ interface ButtonProps
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   asChild?: boolean;
-  // onClick?: () => void;
+  onClick?: () => void;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
