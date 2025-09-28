@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "./Button";
+import { Button } from "./Button";
 import Logo from "./logo";
 import Link from "next/link";
 import CartIcon from "./icons/CartIcon";

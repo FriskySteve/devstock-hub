@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Button from "../Button";
+import { Button } from "../Button";
 import GreaterThenIcon from "../icons/GreaterThenIcon";
 import LessThenIcon from "../icons/LessThenIcon";
 import RightArrow from "../icons/ArrowRight";

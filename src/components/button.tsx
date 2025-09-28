@@ -28,19 +28,6 @@ const buttonVariants = cva(
     },
   }
 );
-
-// interface ButtonProps
-//   extends Omit<
-//       React.ComponentProps<"button">,
-//       keyof VariantProps<typeof buttonVariants>
-//     >,
-//     VariantProps<typeof buttonVariants> {
-//   leftIcon?: React.ReactNode;
-//   rightIcon?: React.ReactNode;
-//   asChild?: boolean;
-//   onClick?: () => void;
-// }
-
 function Button({
   className,
   style,
