@@ -10,7 +10,7 @@ import OrderIcon from "@/components/icons/OrderIcon";
 import { Button } from "@/components/shared/Button";
 
 export default function ProfilePage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
