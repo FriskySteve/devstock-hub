@@ -29,39 +29,36 @@ const buttonVariants = cva(
   }
 );
 
-interface ButtonProps
-  extends Omit<
-      React.ComponentProps<"button">,
-      keyof VariantProps<typeof buttonVariants>
-    >,
-    VariantProps<typeof buttonVariants> {
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
-  asChild?: boolean;
-  onClick?: () => void;
+// interface ButtonProps
+//   extends Omit<
+//       React.ComponentProps<"button">,
+//       keyof VariantProps<typeof buttonVariants>
+//     >,
+//     VariantProps<typeof buttonVariants> {
+//   leftIcon?: React.ReactNode;
+//   rightIcon?: React.ReactNode;
+//   asChild?: boolean;
+//   onClick?: () => void;
+// }
+
+function Button({
+  className,
+  style,
+  size,
+  asChild = false,
+  ...props
+}: React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean;
+  }) {
+  const Comp = asChild ? Slot : "button";
+  return (
+    <Comp
+      data-slot="button"
+      className={cn(buttonVariants({ style, size, className }))}
+      {...props}
+    />
+  );
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    { className, style, size, children, onClick, asChild = false, ...props },
-    ref
-  ) => {
-    const Comp = asChild ? Slot : "button";
-
-    return (
-      <Comp
-        ref={ref}
-        data-slot="button"
-        className={cn(buttonVariants({ style, size, className }))}
-        onClick={onClick}
-        {...props}
-      >
-        {children}
-      </Comp>
-    );
-  }
-);
-
-Button.displayName = "Button";
-export default Button;
-export { buttonVariants };
+export { Button, buttonVariants };
