@@ -9,7 +9,7 @@ export async function addItemToCart(productId: number, quantity: number = 1) {
     const data = await res.json();
 
     if (!res.ok) {
-      console.log("DataId: ", data.id);
+      console.log("DataId: ", data);
       console.error(data.message || "Adding to cart failed.");
       return null;
     }
