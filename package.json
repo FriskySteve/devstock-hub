@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "bunx prisma db push && bunx prisma generate && next build",
+    "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "bunx prisma generate"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
