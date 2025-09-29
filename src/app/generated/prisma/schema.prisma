@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  phone     String    @unique
+  password  String
+  country   String
+  addresses Address[]
+  orders    Order[]
+  cart      Cart?
+  createdAt DateTime  @default(now())
+
+  @@map("users")
+}
+
+model Address {
+  id          Int     @id @default(autoincrement())
+  userId      Int
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  country     String
+  province    String
+  city        String
+  postalCode  String  @map("postal_code")
+  addressLine String  @map("address_line")
+  isMain      Boolean @default(false) @map("is_main")
+
+  @@map("addresses")
+}
+
+model Product {
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String      @db.Text
+  price       Decimal     @db.Decimal(10, 2)
+  stock       Int         @default(0)
+  images      String[]
+  categoryId  Int         @map("category_id")
+  category    Category    @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  brandId     Int         @map("brand_id")
+  brand       Brand       @relation(fields: [brandId], references: [id], onDelete: Restrict)
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+  createdAt   DateTime    @default(now()) @map("created_at")
+
+  @@index([categoryId])
+  @@index([brandId])
+  @@map("products")
+}
+
+model Brand {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  logoUrl  String    @map("logo_url")
+  products Product[]
+
+  @@map("brands")
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String    @db.Text
+  imageUrl    String    @map("image_url")
+  iconUrl     String    @map("icon_url")
+  products    Product[]
+
+  @@map("categories")
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+model Order {
+  id        Int         @id @default(autoincrement())
+  userId    Int         @map("user_id")
+  user      User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  status    OrderStatus @default(PENDING)
+  items     OrderItem[]
+  createdAt DateTime    @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("orders")
+}
+
+model OrderItem {
+  id              Int     @id @default(autoincrement())
+  orderId         Int     @map("order_id")
+  order           Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId       Int     @map("product_id")
+  product         Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+  quantity        Int
+  priceAtPurchase Decimal @map("price_at_purchase") @db.Decimal(10, 2)
+
+  @@map("order_items")
+}
+
+model Cart {
+  id        Int        @id @default(autoincrement())
+  userId    Int        @unique @map("user_id")
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     CartItem[]
+  createdAt DateTime   @default(now()) @map("created_at")
+
+  @@map("carts")
+}
+
+model CartItem {
+  id         Int     @id @default(autoincrement())
+  cartId     Int     @map("cart_id")
+  productId  Int     @map("product_id")
+  quantity   Int     @default(1)
+  addedPrice Decimal
+  cart       Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("cart_items")
+}
