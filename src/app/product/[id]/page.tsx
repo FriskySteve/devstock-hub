@@ -4,14 +4,13 @@ import { Description } from "@/components/product/details/Description";
 import { getData } from "@/services/getData";
 import Breadcrumb from "@/components/Breadcrumb";
 
-export default async function ProductDetails({
-  params,
-}: {
-  params: { id: string };
-}) {
+type Params = Promise<{ id: string }>;
+
+export default async function ProductDetails({ params }: { params: Params }) {
   try {
+    const { id } = await params;
     const { product, deliveryDay, deliveryDay2 } = await getData(
-      `/api/products/${params.id}`
+      `/api/products/${id}`
     );
 
     return (
@@ -30,7 +29,7 @@ export default async function ProductDetails({
             deliveryDay2={deliveryDay2}
           />
           <Detailer
-            id={parseInt(params.id)}
+            id={parseInt(id)}
             stock={product.stock}
             price={product.price}
           />
