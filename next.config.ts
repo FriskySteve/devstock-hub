@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.alias["@prisma/client"] = false;
+    }
+    return config;
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -13,5 +19,4 @@ const nextConfig: NextConfig = {
     domains: ["i.ibb.co", "imgbb.com", "i.postimg.cc"],
   },
 };
-
 export default nextConfig;
