@@ -4,16 +4,14 @@ import { Description } from "@/components/product/details/Description";
 import { getData } from "@/services/getData";
 import Breadcrumb from "@/components/Breadcrumb";
 
-type ProductDetailsProps = {
-  params: {
-    id: string;
-  };
-};
+export default async function ProductDetails({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const { product, deliveryDay } = await getData(`/api/products/${params.id}`);
 
-export default async function ProductDetails({ params }: ProductDetailsProps) {
-  const { product, deliveryDay, deliveryDay2 } = await getData(
-    `/api/products/${params.id}`
-  );
+  console.log(product.category);
 
   return (
     <div className="p-[40px]">
@@ -28,7 +26,7 @@ export default async function ProductDetails({ params }: ProductDetailsProps) {
           desc={product.description}
           price={product.price}
           deliveryDay={deliveryDay}
-          deliveryDay2={deliveryDay2}
+          deliveryDay2={deliveryDay}
         />
         <Detailer
           id={parseInt(params.id)}
