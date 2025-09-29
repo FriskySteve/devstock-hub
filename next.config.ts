@@ -1,10 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.alias["@prisma/client"] = false;
-    }
+  webpack: (config) => {
+    config.externals.push({
+      "@prisma/client": "commonjs @prisma/client",
+    });
     return config;
   },
   eslint: {
