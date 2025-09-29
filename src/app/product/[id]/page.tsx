@@ -9,10 +9,8 @@ export default async function ProductDetails({
 }: {
   params: { id: string };
 }) {
-  const { id } = params;
-
   const { product, deliveryDay, deliveryDay2 } = await getData(
-    `/api/products/${id}`
+    `/api/products/${params.id}`
   );
 
   return (
@@ -31,7 +29,7 @@ export default async function ProductDetails({
           deliveryDay2={deliveryDay2}
         />
         <Detailer
-          id={parseInt(id)}
+          id={parseInt(params.id)}
           stock={product.stock}
           price={product.price}
         />
