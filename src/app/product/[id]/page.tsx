@@ -9,31 +9,36 @@ export default async function ProductDetails({
 }: {
   params: { id: string };
 }) {
-  const { product, deliveryDay, deliveryDay2 } = await getData(
-    `/api/products/${params.id}`
-  );
+  try {
+    const { product, deliveryDay, deliveryDay2 } = await getData(
+      `/api/products/${params.id}`
+    );
 
-  return (
-    <div className="p-[40px]">
-      <div>
-        <Breadcrumb productName={product.name} />
+    return (
+      <div className="p-[40px]">
+        <div>
+          <Breadcrumb productName={product.name} />
+        </div>
+        <div className="flex justify-between gap-x-[32px]">
+          <Gallery name={product.name} images={product.images} />
+          <Description
+            name={product.name}
+            category={product.category.name}
+            desc={product.description}
+            price={product.price}
+            deliveryDay={deliveryDay}
+            deliveryDay2={deliveryDay2}
+          />
+          <Detailer
+            id={parseInt(params.id)}
+            stock={product.stock}
+            price={product.price}
+          />
+        </div>
       </div>
-      <div className="flex justify-between gap-x-[32px]">
-        <Gallery name={product.name} images={product.images} />
-        <Description
-          name={product.name}
-          category={product.category.name}
-          desc={product.description}
-          price={product.price}
-          deliveryDay={deliveryDay}
-          deliveryDay2={deliveryDay2}
-        />
-        <Detailer
-          id={parseInt(params.id)}
-          stock={product.stock}
-          price={product.price}
-        />
-      </div>
-    </div>
-  );
+    );
+  } catch (error) {
+    console.error("Error loading product details:", error);
+    return <div>Wystąpił błąd podczas ładowania produktu.</div>;
+  }
 }
