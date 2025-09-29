@@ -1,15 +1,13 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-type Params = { id: string };
-
-export async function GET(req: NextRequest, { params }: { params: Params }) {
-  const { id } = await params;
+export async function GET(req: NextRequest) {
+  const id = req.nextUrl.pathname.split("/").pop();
   const productId = Number(id);
 
   try {
     const product = await prisma.product.findUnique({
-      where: { id: Number(productId) },
+      where: { id: productId },
       include: {
         category: {
           select: { id: true, name: true },
