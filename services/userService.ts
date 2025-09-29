@@ -1,4 +1,4 @@
-import { prisma } from "../lib/prisma";
+import prisma from "../lib/prisma";
 import { hashPassword } from "../lib/auth";
 import { User } from "@/lib/types";
 
