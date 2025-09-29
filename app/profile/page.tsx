@@ -71,7 +71,7 @@ export default function ProfilePage() {
   if (!user) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="text-white text-lg">User not found</div>
+        <div className="text-white text-lg">User not found test</div>
       </div>
     );
   }
