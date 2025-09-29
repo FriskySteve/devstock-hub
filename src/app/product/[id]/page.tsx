@@ -13,8 +13,6 @@ export default async function ProductDetails({
     `/api/products/${params.id}`
   );
 
-  console.log(product.category);
-
   return (
     <div className="p-[40px]">
       <div>
