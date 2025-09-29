@@ -10,6 +10,10 @@ export default withAuth(
     const { pathname } = req.nextUrl;
     const token = req.nextauth.token;
 
+    if (!token?.email) {
+      return;
+    }
+
     if (token?.email) {
       try {
         const user = await prisma.user.findUnique({
