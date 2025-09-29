@@ -3,11 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const id = req.nextUrl.pathname.split("/").pop();
-  const productId = Number(id);
 
   try {
     const product = await prisma.product.findUnique({
-      where: { id: productId },
+      where: { id: Number(id) },
       include: {
         category: {
           select: { id: true, name: true },
