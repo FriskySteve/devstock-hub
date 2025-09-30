@@ -1,12 +1,13 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { NextResponse } from "next/server";
+import { Product } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function shuffle(items: []) {
+export function shuffle(items: Product[]) {
   const shuffledItems = items
     .map((p) => ({ sort: Math.random(), value: p }))
     .sort((a, b) => a.sort - b.sort)

@@ -9,7 +9,7 @@ export type Product = {
   price: number;
   stock: number;
   images: string[];
-  category: { name: string };
+  category?: { name: string };
 };
 export type Category = {
   id: number;
