@@ -2,14 +2,8 @@ import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 import prisma from "./lib/prisma";
 
-const authRoutes = [
-  "/login",
-  "/register",
-  "/register-success",
-  "/",
-  "/product",
-];
-const publicRoutes = ["/contact"];
+const authRoutes = ["/login", "/register", "/register-success"];
+const publicRoutes = ["/", "/product"];
 
 export default withAuth(
   async function middleware(req) {
