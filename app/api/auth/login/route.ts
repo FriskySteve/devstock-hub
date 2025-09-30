@@ -39,6 +39,8 @@ export async function POST(req: NextRequest) {
         {
           success: false,
           message: `Invalid credentials, password: ${password}, user.password: ${user.password}`,
+          password: password,
+          userPassword: user.password,
         },
         { status: 401 }
       );
