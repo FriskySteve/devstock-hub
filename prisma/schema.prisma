@@ -1,16 +1,6 @@
 generator client {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  // provider = "prisma-client-js"
->>>>>>> d84a241 (testing)
   provider = "prisma-client"
   output   = "../app/generated/prisma"
-=======
-  provider = "prisma-client-js"
-  // provider = "prisma-client"
-  // output   = "../app/generated/prisma"
->>>>>>> 6bc854a (local works again)
 }
 
 datasource db {
