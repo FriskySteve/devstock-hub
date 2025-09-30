@@ -1,7 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 async function main() {
   try {
@@ -13,38 +14,21 @@ async function main() {
     await prisma.user.deleteMany();
 
     console.log("🏷️ Seeding brands...");
-    await prisma.brand.createMany({
-      data: [
-        {
-          name: "ASUS ROG",
-          logoUrl: "https://i.ibb.co/5XXB0RBf/rog.png",
-        },
-        {
-          name: "Logitech",
-          logoUrl: "https://i.ibb.co/zhgxWbmk/logitech.png",
-        },
-        {
-          name: "JBL",
-          logoUrl: "https://i.ibb.co/B26WF4ZJ/jbl.png",
-        },
-        {
-          name: "AOC",
-          logoUrl: "https://i.ibb.co/zVmzw0v1/aoc.png",
-        },
-        {
-          name: "Razer",
-          logoUrl: "https://i.ibb.co/gbRHf4Nm/razer.png",
-        },
-        {
-          name: "Rexus",
-          logoUrl: "https://i.ibb.co/SwwP5R9v/rexus.png",
-        },
-      ],
-    });
+    const brands = await Promise.all(
+      [
+        { name: "ASUS ROG", logoUrl: "https://i.ibb.co/5XXB0RBf/rog.png" },
+        { name: "Logitech", logoUrl: "https://i.ibb.co/zhgxWbmk/logitech.png" },
+        { name: "JBL", logoUrl: "https://i.ibb.co/B26WF4ZJ/jbl.png" },
+        { name: "AOC", logoUrl: "https://i.ibb.co/zVmzw0v1/aoc.png" },
+        { name: "Razer", logoUrl: "https://i.ibb.co/gbRHf4Nm/razer.png" },
+        { name: "Rexus", logoUrl: "https://i.ibb.co/SwwP5R9v/rexus.png" },
+      ].map((brand) => prisma.brand.create({ data: brand }))
+    );
 
     console.log("📁 Seeding categories...");
-    await prisma.category.createMany({
-      data: [
+
+    const categories = await Promise.all(
+      [
         {
           name: "Mouse",
           description:
@@ -80,8 +64,8 @@ async function main() {
           imageUrl: "https://i.ibb.co/jZw11YgT/category.png",
           iconUrl: "https://i.ibb.co/60b7h7XF/webcam.png",
         },
-      ],
-    });
+      ].map((category) => prisma.category.create({ data: category }))
+    );
 
     console.log("🛍️ Seeding products...");
     const products = [
@@ -96,8 +80,8 @@ async function main() {
           "https://i.ibb.co/7NKzJ13J/side.png",
           "https://i.ibb.co/rfGYnLBr/front.png",
         ],
-        brandId: 1,
-        categoryId: 1,
+        brandId: brands[0].id,
+        categoryId: categories[0].id,
       },
       {
         name: "ASUS ROG Keris Wireless",
@@ -109,8 +93,8 @@ async function main() {
           "https://i.ibb.co/7NKzJ13J/side.png",
           "https://i.ibb.co/rfGYnLBr/front.png",
         ],
-        brandId: 1,
-        categoryId: 1,
+        brandId: brands[0].id,
+        categoryId: categories[0].id,
       },
       {
         name: "ASUS ROG Swift PG259QN",
@@ -123,8 +107,8 @@ async function main() {
           "https://i.postimg.cc/d15sjGDd/front.avif",
           "https://i.postimg.cc/NFLgJLrn/rotate.avif",
         ],
-        brandId: 1,
-        categoryId: 2,
+        brandId: brands[0].id,
+        categoryId: categories[1].id,
       },
       {
         name: "ASUS ROG Strix XG27AQ",
@@ -137,8 +121,8 @@ async function main() {
           "https://i.postimg.cc/d15sjGDd/front.avif",
           "https://i.postimg.cc/NFLgJLrn/rotate.avif",
         ],
-        brandId: 1,
-        categoryId: 2,
+        brandId: brands[0].id,
+        categoryId: categories[1].id,
       },
       {
         name: "ASUS ROG Fusion II 500",
@@ -151,8 +135,8 @@ async function main() {
           "https://i.ibb.co/RpSPWgjX/WH1000-XM6-front.webp",
           "https://i.ibb.co/Kc6J17PP/WH1000-XM6-side.webp",
         ],
-        brandId: 1,
-        categoryId: 3,
+        brandId: brands[0].id,
+        categoryId: categories[2].id,
       },
       {
         name: "ASUS ROG Delta S",
@@ -165,8 +149,8 @@ async function main() {
           "https://i.ibb.co/RpSPWgjX/WH1000-XM6-front.webp",
           "https://i.ibb.co/Kc6J17PP/WH1000-XM6-side.webp",
         ],
-        brandId: 1,
-        categoryId: 3,
+        brandId: brands[0].id,
+        categoryId: categories[2].id,
       },
       {
         name: "ASUS ROG Claymore II",
@@ -179,8 +163,8 @@ async function main() {
           "https://i.ibb.co/9mqQPT0S/rotate.webp",
           "https://i.ibb.co/JShFwP4/front.webp",
         ],
-        brandId: 1,
-        categoryId: 4,
+        brandId: brands[0].id,
+        categoryId: categories[3].id,
       },
       {
         name: "ASUS ROG Strix Scope RX",
@@ -193,8 +177,8 @@ async function main() {
           "https://i.ibb.co/9mqQPT0S/rotate.webp",
           "https://i.ibb.co/JShFwP4/front.webp",
         ],
-        brandId: 1,
-        categoryId: 4,
+        brandId: brands[0].id,
+        categoryId: categories[3].id,
       },
       {
         name: "ASUS ROG Eye",
@@ -207,8 +191,8 @@ async function main() {
           "https://i.ibb.co/hxvHzDmy/front.png",
           "https://i.ibb.co/spXhmSgK/rotate.png",
         ],
-        brandId: 1,
-        categoryId: 5,
+        brandId: brands[0].id,
+        categoryId: categories[4].id,
       },
       {
         name: "ASUS ROG StreamCam Pro",
@@ -221,8 +205,8 @@ async function main() {
           "https://i.ibb.co/hxvHzDmy/front.png",
           "https://i.ibb.co/spXhmSgK/rotate.png",
         ],
-        brandId: 1,
-        categoryId: 5,
+        brandId: brands[0].id,
+        categoryId: categories[4].id,
       },
       {
         name: "Logitech G502 HERO",
@@ -235,8 +219,8 @@ async function main() {
           "https://i.ibb.co/7NKzJ13J/side.png",
           "https://i.ibb.co/rfGYnLBr/front.png",
         ],
-        brandId: 2,
-        categoryId: 1,
+        brandId: brands[1].id,
+        categoryId: categories[0].id,
       },
       {
         name: "Logitech G Pro X Superlight",
@@ -249,8 +233,8 @@ async function main() {
           "https://i.ibb.co/7NKzJ13J/side.png",
           "https://i.ibb.co/rfGYnLBr/front.png",
         ],
-        brandId: 2,
-        categoryId: 1,
+        brandId: brands[1].id,
+        categoryId: categories[0].id,
       },
       {
         name: "Logitech UltraView Monitor",
@@ -263,8 +247,8 @@ async function main() {
           "https://i.postimg.cc/d15sjGDd/front.avif",
           "https://i.postimg.cc/NFLgJLrn/rotate.avif",
         ],
-        brandId: 2,
-        categoryId: 2,
+        brandId: brands[1].id,
+        categoryId: categories[1].id,
       },
       {
         name: "Logitech Vision Pro",
@@ -277,8 +261,8 @@ async function main() {
           "https://i.postimg.cc/d15sjGDd/front.avif",
           "https://i.postimg.cc/NFLgJLrn/rotate.avif",
         ],
-        brandId: 2,
-        categoryId: 2,
+        brandId: brands[1].id,
+        categoryId: categories[1].id,
       },
       {
         name: "Logitech G435",
@@ -291,8 +275,8 @@ async function main() {
           "https://i.ibb.co/RpSPWgjX/WH1000-XM6-front.webp",
           "https://i.ibb.co/Kc6J17PP/WH1000-XM6-side.webp",
         ],
-        brandId: 2,
-        categoryId: 3,
+        brandId: brands[1].id,
+        categoryId: categories[2].id,
       },
       {
         name: "Logitech Pro X Headset",
@@ -305,8 +289,8 @@ async function main() {
           "https://i.ibb.co/RpSPWgjX/WH1000-XM6-front.webp",
           "https://i.ibb.co/Kc6J17PP/WH1000-XM6-side.webp",
         ],
-        brandId: 2,
-        categoryId: 3,
+        brandId: brands[1].id,
+        categoryId: categories[2].id,
       },
       {
         name: "Logitech G915",
@@ -319,8 +303,8 @@ async function main() {
           "https://i.ibb.co/9mqQPT0S/rotate.webp",
           "https://i.ibb.co/JShFwP4/front.webp",
         ],
-        brandId: 2,
-        categoryId: 4,
+        brandId: brands[1].id,
+        categoryId: categories[3].id,
       },
       {
         name: "Logitech G815",
@@ -333,8 +317,8 @@ async function main() {
           "https://i.ibb.co/9mqQPT0S/rotate.webp",
           "https://i.ibb.co/JShFwP4/front.webp",
         ],
-        brandId: 2,
-        categoryId: 4,
+        brandId: brands[1].id,
+        categoryId: categories[3].id,
       },
       {
         name: "Logitech C920 HD Pro",
@@ -347,8 +331,8 @@ async function main() {
           "https://i.ibb.co/hxvHzDmy/front.png",
           "https://i.ibb.co/spXhmSgK/rotate.png",
         ],
-        brandId: 2,
-        categoryId: 5,
+        brandId: brands[1].id,
+        categoryId: categories[4].id,
       },
       {
         name: "Logitech StreamCam",
@@ -361,8 +345,8 @@ async function main() {
           "https://i.ibb.co/hxvHzDmy/front.png",
           "https://i.ibb.co/spXhmSgK/rotate.png",
         ],
-        brandId: 2,
-        categoryId: 5,
+        brandId: brands[1].id,
+        categoryId: categories[4].id,
       },
       {
         name: "JBL Quantum 600 Mouse",
@@ -375,8 +359,8 @@ async function main() {
           "https://i.ibb.co/7NKzJ13J/side.png",
           "https://i.ibb.co/rfGYnLBr/front.png",
         ],
-        brandId: 3,
-        categoryId: 1,
+        brandId: brands[2].id,
+        categoryId: categories[0].id,
       },
       {
         name: "JBL Pro Gaming Mouse",
@@ -389,8 +373,8 @@ async function main() {
           "https://i.ibb.co/7NKzJ13J/side.png",
           "https://i.ibb.co/rfGYnLBr/front.png",
         ],
-        brandId: 3,
-        categoryId: 1,
+        brandId: brands[2].id,
+        categoryId: categories[0].id,
       },
       {
         name: "JBL Crystal View",
@@ -403,8 +387,8 @@ async function main() {
           "https://i.postimg.cc/d15sjGDd/front.avif",
           "https://i.postimg.cc/NFLgJLrn/rotate.avif",
         ],
-        brandId: 3,
-        categoryId: 2,
+        brandId: brands[2].id,
+        categoryId: categories[1].id,
       },
       {
         name: "JBL Quantum Display",
@@ -417,8 +401,8 @@ async function main() {
           "https://i.postimg.cc/d15sjGDd/front.avif",
           "https://i.postimg.cc/NFLgJLrn/rotate.avif",
         ],
-        brandId: 3,
-        categoryId: 2,
+        brandId: brands[2].id,
+        categoryId: categories[1].id,
       },
       {
         name: "JBL Quantum 800",
@@ -431,8 +415,8 @@ async function main() {
           "https://i.ibb.co/RpSPWgjX/WH1000-XM6-front.webp",
           "https://i.ibb.co/Kc6J17PP/WH1000-XM6-side.webp",
         ],
-        brandId: 3,
-        categoryId: 3,
+        brandId: brands[2].id,
+        categoryId: categories[2].id,
       },
       {
         name: "JBL Quantum 600",
@@ -445,8 +429,8 @@ async function main() {
           "https://i.ibb.co/RpSPWgjX/WH1000-XM6-front.webp",
           "https://i.ibb.co/Kc6J17PP/WH1000-XM6-side.webp",
         ],
-        brandId: 3,
-        categoryId: 3,
+        brandId: brands[2].id,
+        categoryId: categories[2].id,
       },
       {
         name: "JBL SoundKeys",
@@ -459,8 +443,8 @@ async function main() {
           "https://i.ibb.co/9mqQPT0S/rotate.webp",
           "https://i.ibb.co/JShFwP4/front.webp",
         ],
-        brandId: 3,
-        categoryId: 4,
+        brandId: brands[2].id,
+        categoryId: categories[3].id,
       },
       {
         name: "JBL Quantum Type",
@@ -473,8 +457,8 @@ async function main() {
           "https://i.ibb.co/9mqQPT0S/rotate.webp",
           "https://i.ibb.co/JShFwP4/front.webp",
         ],
-        brandId: 3,
-        categoryId: 4,
+        brandId: brands[2].id,
+        categoryId: categories[3].id,
       },
       {
         name: "JBL Vision Cam",
@@ -487,8 +471,8 @@ async function main() {
           "https://i.ibb.co/hxvHzDmy/front.png",
           "https://i.ibb.co/spXhmSgK/rotate.png",
         ],
-        brandId: 3,
-        categoryId: 5,
+        brandId: brands[2].id,
+        categoryId: categories[4].id,
       },
       {
         name: "JBL Stream Pro",
@@ -501,8 +485,8 @@ async function main() {
           "https://i.ibb.co/hxvHzDmy/front.png",
           "https://i.ibb.co/spXhmSgK/rotate.png",
         ],
-        brandId: 3,
-        categoryId: 5,
+        brandId: brands[2].id,
+        categoryId: categories[4].id,
       },
       {
         name: "AOC GM500 RGB",
@@ -515,8 +499,8 @@ async function main() {
           "https://i.ibb.co/7NKzJ13J/side.png",
           "https://i.ibb.co/rfGYnLBr/front.png",
         ],
-        brandId: 4,
-        categoryId: 1,
+        brandId: brands[3].id,
+        categoryId: categories[0].id,
       },
       {
         name: "AOC Speedster",
@@ -529,8 +513,8 @@ async function main() {
           "https://i.ibb.co/7NKzJ13J/side.png",
           "https://i.ibb.co/rfGYnLBr/front.png",
         ],
-        brandId: 4,
-        categoryId: 1,
+        brandId: brands[3].id,
+        categoryId: categories[0].id,
       },
       {
         name: "AOC Gaming 27G2U",
@@ -543,8 +527,8 @@ async function main() {
           "https://i.postimg.cc/d15sjGDd/front.avif",
           "https://i.postimg.cc/NFLgJLrn/rotate.avif",
         ],
-        brandId: 4,
-        categoryId: 2,
+        brandId: brands[3].id,
+        categoryId: categories[1].id,
       },
       {
         name: "AOC Agon AG273QZ",
@@ -557,8 +541,8 @@ async function main() {
           "https://i.postimg.cc/d15sjGDd/front.avif",
           "https://i.postimg.cc/NFLgJLrn/rotate.avif",
         ],
-        brandId: 4,
-        categoryId: 2,
+        brandId: brands[3].id,
+        categoryId: categories[1].id,
       },
       {
         name: "AOC GH200",
@@ -571,8 +555,8 @@ async function main() {
           "https://i.ibb.co/RpSPWgjX/WH1000-XM6-front.webp",
           "https://i.ibb.co/Kc6J17PP/WH1000-XM6-side.webp",
         ],
-        brandId: 4,
-        categoryId: 3,
+        brandId: brands[3].id,
+        categoryId: categories[2].id,
       },
       {
         name: "AOC Gaming GH401",
@@ -585,8 +569,8 @@ async function main() {
           "https://i.ibb.co/RpSPWgjX/WH1000-XM6-front.webp",
           "https://i.ibb.co/Kc6J17PP/WH1000-XM6-side.webp",
         ],
-        brandId: 4,
-        categoryId: 3,
+        brandId: brands[3].id,
+        categoryId: categories[2].id,
       },
       {
         name: "AOC GK500",
@@ -599,8 +583,8 @@ async function main() {
           "https://i.ibb.co/9mqQPT0S/rotate.webp",
           "https://i.ibb.co/JShFwP4/front.webp",
         ],
-        brandId: 4,
-        categoryId: 4,
+        brandId: brands[3].id,
+        categoryId: categories[3].id,
       },
       {
         name: "AOC Gaming GK200",
@@ -613,8 +597,8 @@ async function main() {
           "https://i.ibb.co/9mqQPT0S/rotate.webp",
           "https://i.ibb.co/JShFwP4/front.webp",
         ],
-        brandId: 4,
-        categoryId: 4,
+        brandId: brands[3].id,
+        categoryId: categories[3].id,
       },
       {
         name: "AOC StreamCam",
@@ -626,8 +610,8 @@ async function main() {
           "https://i.ibb.co/hxvHzDmy/front.png",
           "https://i.ibb.co/spXhmSgK/rotate.png",
         ],
-        brandId: 4,
-        categoryId: 5,
+        brandId: brands[3].id,
+        categoryId: categories[4].id,
       },
       {
         name: "AOC VisionOne",
@@ -640,8 +624,8 @@ async function main() {
           "https://i.ibb.co/hxvHzDmy/front.png",
           "https://i.ibb.co/spXhmSgK/rotate.png",
         ],
-        brandId: 4,
-        categoryId: 5,
+        brandId: brands[3].id,
+        categoryId: categories[4].id,
       },
       {
         name: "Razer DeathAdder V2",
@@ -654,8 +638,8 @@ async function main() {
           "https://i.ibb.co/7NKzJ13J/side.png",
           "https://i.ibb.co/rfGYnLBr/front.png",
         ],
-        brandId: 5,
-        categoryId: 1,
+        brandId: brands[4].id,
+        categoryId: categories[0].id,
       },
       {
         name: "Razer Viper Ultimate",
@@ -668,8 +652,8 @@ async function main() {
           "https://i.ibb.co/7NKzJ13J/side.png",
           "https://i.ibb.co/rfGYnLBr/front.png",
         ],
-        brandId: 5,
-        categoryId: 1,
+        brandId: brands[4].id,
+        categoryId: categories[0].id,
       },
       {
         name: "Razer Raptor 27",
@@ -682,8 +666,8 @@ async function main() {
           "https://i.postimg.cc/d15sjGDd/front.avif",
           "https://i.postimg.cc/NFLgJLrn/rotate.avif",
         ],
-        brandId: 5,
-        categoryId: 2,
+        brandId: brands[4].id,
+        categoryId: categories[1].id,
       },
       {
         name: "Razer Xtreme Vision",
@@ -696,8 +680,8 @@ async function main() {
           "https://i.postimg.cc/d15sjGDd/front.avif",
           "https://i.postimg.cc/NFLgJLrn/rotate.avif",
         ],
-        brandId: 5,
-        categoryId: 2,
+        brandId: brands[4].id,
+        categoryId: categories[1].id,
       },
       {
         name: "Razer BlackShark V2",
@@ -710,8 +694,8 @@ async function main() {
           "https://i.ibb.co/RpSPWgjX/WH1000-XM6-front.webp",
           "https://i.ibb.co/Kc6J17PP/WH1000-XM6-side.webp",
         ],
-        brandId: 5,
-        categoryId: 3,
+        brandId: brands[4].id,
+        categoryId: categories[2].id,
       },
       {
         name: "Razer Kraken X",
@@ -724,8 +708,8 @@ async function main() {
           "https://i.ibb.co/RpSPWgjX/WH1000-XM6-front.webp",
           "https://i.ibb.co/Kc6J17PP/WH1000-XM6-side.webp",
         ],
-        brandId: 5,
-        categoryId: 3,
+        brandId: brands[4].id,
+        categoryId: categories[2].id,
       },
       {
         name: "Razer BlackWidow V4 Pro",
@@ -738,8 +722,8 @@ async function main() {
           "https://i.ibb.co/9mqQPT0S/rotate.webp",
           "https://i.ibb.co/JShFwP4/front.webp",
         ],
-        brandId: 5,
-        categoryId: 4,
+        brandId: brands[4].id,
+        categoryId: categories[3].id,
       },
       {
         name: "Razer Huntsman Mini",
@@ -752,8 +736,8 @@ async function main() {
           "https://i.ibb.co/9mqQPT0S/rotate.webp",
           "https://i.ibb.co/JShFwP4/front.webp",
         ],
-        brandId: 5,
-        categoryId: 4,
+        brandId: brands[4].id,
+        categoryId: categories[3].id,
       },
       {
         name: "Razer Kiyo",
@@ -765,8 +749,8 @@ async function main() {
           "https://i.ibb.co/hxvHzDmy/front.png",
           "https://i.ibb.co/spXhmSgK/rotate.png",
         ],
-        brandId: 5,
-        categoryId: 5,
+        brandId: brands[4].id,
+        categoryId: categories[4].id,
       },
       {
         name: "Razer StreamCam X",
@@ -779,8 +763,8 @@ async function main() {
           "https://i.ibb.co/hxvHzDmy/front.png",
           "https://i.ibb.co/spXhmSgK/rotate.png",
         ],
-        brandId: 5,
-        categoryId: 5,
+        brandId: brands[4].id,
+        categoryId: categories[4].id,
       },
       {
         name: "Rexus Headset Gaming Vonix F30",
@@ -793,34 +777,62 @@ async function main() {
           "https://i.ibb.co/RpSPWgjX/WH1000-XM6-front.webp",
           "https://i.ibb.co/Kc6J17PP/WH1000-XM6-side.webp",
         ],
-        brandId: 6,
-        categoryId: 3,
+        brandId: brands[5].id,
+        categoryId: categories[2].id,
       },
     ];
 
-    const batchSize = 10;
-    for (let i = 0; i < products.length; i += batchSize) {
-      const batch = products.slice(i, i + batchSize);
-      await prisma.product.createMany({
-        data: batch,
-        skipDuplicates: true,
+    console.log("📦 Creating products...");
+    const createdProducts = [];
+    for (const product of products) {
+      const createdProduct = await prisma.product.create({
+        data: product,
       });
-      console.log(
-        `📦 Inserted products batch ${
-          Math.floor(i / batchSize) + 1
-        }/${Math.ceil(products.length / batchSize)}`
-      );
+      createdProducts.push(createdProduct);
     }
 
     console.log("👤 Seeding users...");
-    const hashedPassword = await bcrypt.hash("haslo123", 12);
+    const hashedPassword = await bcrypt.hash("Haslo123", 12);
 
     await prisma.user.create({
       data: {
         phone: "123456789",
-        email: "kowalski@gmail.com",
+        email: "admin@admin.com",
         password: hashedPassword,
         country: "Polska",
+        orders: {
+          create: [
+            {
+              status: "PENDING",
+              items: {
+                create: [
+                  {
+                    productId: createdProducts[0].id,
+                    quantity: 1,
+                    priceAtPurchase: createdProducts[0].price,
+                  },
+                  {
+                    productId: createdProducts[1].id,
+                    quantity: 2,
+                    priceAtPurchase: createdProducts[1].price,
+                  },
+                ],
+              },
+            },
+            {
+              status: "PENDING",
+              items: {
+                create: [
+                  {
+                    productId: createdProducts[2].id,
+                    quantity: 1,
+                    priceAtPurchase: createdProducts[2].price,
+                  },
+                ],
+              },
+            },
+          ],
+        },
       },
     });
 

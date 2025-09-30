@@ -1,10 +1,16 @@
 generator client {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   // provider = "prisma-client-js"
 >>>>>>> d84a241 (testing)
   provider = "prisma-client"
   output   = "../app/generated/prisma"
+=======
+  provider = "prisma-client-js"
+  // provider = "prisma-client"
+  // output   = "../app/generated/prisma"
+>>>>>>> 6bc854a (local works again)
 }
 
 datasource db {
@@ -48,9 +54,9 @@ model Product {
   stock       Int          @default(0)
   images      String[]     
   categoryId  Int          @map("category_id")
-  category    Category     @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  category    Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   brandId     Int          @map("brand_id")
-  brand       Brand        @relation(fields: [brandId], references: [id], onDelete: Restrict)
+  brand       Brand        @relation(fields: [brandId], references: [id], onDelete: Cascade)
   cartItems   CartItem[]
   orderItems  OrderItem[]
   createdAt   DateTime     @default(now()) @map("created_at")
@@ -101,7 +107,7 @@ enum PaymentStatus {
 model Order {
   id              Int           @id @default(autoincrement())
   userId          Int           @map("user_id")
-  user            User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   status          OrderStatus   @default(PENDING)
   items           OrderItem[]
   createdAt       DateTime      @default(now()) @map("created_at")
@@ -117,7 +123,7 @@ model OrderItem {
   orderId         Int      @map("order_id")
   order           Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   productId       Int      @map("product_id")
-  product         Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+  product         Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   quantity        Int
   priceAtPurchase Decimal  @db.Decimal(10, 2) @map("price_at_purchase")
 

@@ -12,6 +12,7 @@ export default async function Home() {
   if (!categoriesData || !brandsData || !recommendedProductsData)
     return <p>Error while fetching data. Please wait.</p>;
 
+  console.log("RECOMMENDED PRODUCTS:", recommendedProductsData.products);
   const shuffledRandomProducts = shuffle(recommendedProductsData.products);
 
   return (
