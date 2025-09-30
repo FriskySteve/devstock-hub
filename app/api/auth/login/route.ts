@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { handleError } from "@/lib/utils";
-import prisma from "@/lib/prisma";
+// import prisma from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-
+    const { default: prisma } = await import("@/lib/prisma");
     const user = await prisma.user.findFirst({
       where: {
         OR: [{ email: emailOrMobile }, { phone: emailOrMobile }],
