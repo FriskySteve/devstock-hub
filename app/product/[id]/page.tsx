@@ -38,6 +38,10 @@ export default async function ProductDetails({ params }: { params: Params }) {
     );
   } catch (error) {
     console.error("Error loading product details:", error);
-    return <div>Wystąpił błąd podczas ładowania produktu.</div>;
+    return (
+      <div className="text-red-300">
+        Wystąpił błąd podczas ładowania produktu.
+      </div>
+    );
   }
 }
