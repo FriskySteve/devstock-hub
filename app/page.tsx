@@ -2,12 +2,12 @@ import Carousel from "@/components/home/Carousel";
 import CategoryContainer from "@/components/home/CategoryContainer";
 import ScrollableContainer from "@/components/home/ScrollableContainer";
 import { shuffle } from "@/lib/utils";
-import { getBrands, getCategories, getProducts } from "@/services/getData";
+import { getBrands, getCategories, getAllProducts } from "@/services/getData";
 
 export default async function Home() {
   const categories = await getCategories();
   const brands = await getBrands();
-  const recommendedProducts = await getProducts();
+  const recommendedProducts = await getAllProducts();
 
   const productsWithNumberPrice = recommendedProducts.map((product) => ({
     ...product,

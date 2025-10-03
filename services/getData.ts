@@ -12,9 +12,10 @@ import prisma from "@/lib/prisma";
 export async function getCategories() {
   return await prisma.category.findMany();
 }
-export async function getProducts() {
+export async function getAllProducts() {
   return await prisma.product.findMany();
 }
+
 export async function getBrands() {
   return await prisma.brand.findMany();
 }
