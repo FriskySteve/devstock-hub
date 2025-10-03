@@ -6,6 +6,7 @@ export async function getCategories() {
 }
 export async function getAllProducts() {
   return await prisma.product.findMany();
+}
 
 export async function getProductById(id: number): Promise<ProductDetails> {
   const productRaw = await prisma.product.findUnique({
