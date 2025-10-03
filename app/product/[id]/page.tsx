@@ -1,4 +1,4 @@
-import Detailer from "@/components/product/details/Detailer";
+import ProductActions from "@/components/product/details/ProductActions";
 import Gallery from "@/components/product/details/Gallery";
 import { Description } from "@/components/product/details/Description";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -23,12 +23,12 @@ export default async function ProductDetails({ params }: { params: Params }) {
           <Description
             name={product.name}
             category={product.category?.name ?? ""}
-            desc={product.description}
+            desc={product.description ?? ""}
             price={product.price}
             deliveryDay={deliveryDay}
             deliveryDay2={deliveryDay2 ?? ""}
           />
-          <Detailer
+          <ProductActions
             id={parseInt(id)}
             stock={product.stock}
             price={product.price}

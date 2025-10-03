@@ -12,7 +12,7 @@ type DetailerProps = {
   id: number;
 };
 
-const Detailer = ({ stock, price, id }: DetailerProps) => {
+const ProductActions = ({ stock, price, id }: DetailerProps) => {
   const [quantity, setQuantity] = useState<number>(1);
   const [checked, setChecked] = useState(true);
 
@@ -101,4 +101,4 @@ const Detailer = ({ stock, price, id }: DetailerProps) => {
   );
 };
 
-export default Detailer;
+export default ProductActions;

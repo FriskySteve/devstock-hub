@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { CartItem } from "@/lib/types";
 import Products from "@/components/cart/Products";
-import Detailer from "@/components/cart/Detailer";
+import CartSummary from "@/components/cart/CartSummary";
 import Loader from "@/components/Loader";
 import Breadcrumb from "@/components/Breadcrumb";
 
@@ -62,7 +62,7 @@ export default function CartPage() {
             fetchCart={fetchCart}
             cart={cart}
           />
-          <Detailer totalQuantity={totalQty} totalPrice={totalPrice} />
+          <CartSummary totalQuantity={totalQty} totalPrice={totalPrice} />
         </div>
       </div>
     );

@@ -6,11 +6,11 @@ type CartDetailerProps = {
   totalPrice: number;
 };
 
-const Detailer = ({ totalQuantity, totalPrice }: CartDetailerProps) => {
+const CartSummary = ({ totalQuantity, totalPrice }: CartDetailerProps) => {
   return (
     <div className="flex flex-col w-[423px] max-h-fit p-[24px] bg-[var(--base-white)] border border-border rounded-md max-[500px]:w-[350px] max-[1200px]:self-center">
       <p className="text-[18px] text-[var(--neutral-900)] font-medium pb-[16px]">
-        Total Product
+        Total Products
       </p>
       <div className="flex justify-between pb-[24px] border-b border-border">
         <p className="text-[16px] text-[var(--neutral-600)] font-medium ">
@@ -39,4 +39,4 @@ const Detailer = ({ totalQuantity, totalPrice }: CartDetailerProps) => {
   );
 };
 
-export default Detailer;
+export default CartSummary;
