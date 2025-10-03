@@ -7,7 +7,7 @@ import { Category } from "@/lib/types";
 import type { Product } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { getData } from "@/services/getData";
+import { getCategories, getData } from "@/services/getData";
 
 export default function Product() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -16,11 +16,11 @@ export default function Product() {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [paginationUrl, setPaginationUrl] = useState<string>("");
   const searchParams = useSearchParams();
-
   useEffect(() => {
     const fetchCategories = async () => {
-      const data = await getData("/api/categories");
-      setCategories(data.categories);
+      // const data = await getData("/api/categories");
+      const data = await getCategories();
+      setCategories(data);
     };
 
     const fetchProducts = async () => {

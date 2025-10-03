@@ -1,16 +1,16 @@
 import Detailer from "@/components/product/details/Detailer";
 import Gallery from "@/components/product/details/Gallery";
 import { Description } from "@/components/product/details/Description";
-import { getData } from "@/services/getData";
 import Breadcrumb from "@/components/Breadcrumb";
+import { getProductById } from "@/services/getData";
 
 type Params = Promise<{ id: string }>;
 
 export default async function ProductDetails({ params }: { params: Params }) {
   try {
     const { id } = await params;
-    const { product, deliveryDay, deliveryDay2 } = await getData(
-      `/api/products/${id}`
+    const { product, deliveryDay, deliveryDay2 } = await getProductById(
+      parseInt(id)
     );
 
     return (
@@ -22,11 +22,11 @@ export default async function ProductDetails({ params }: { params: Params }) {
           <Gallery name={product.name} images={product.images} />
           <Description
             name={product.name}
-            category={product.category.name}
+            category={product.category?.name ?? ""}
             desc={product.description}
             price={product.price}
             deliveryDay={deliveryDay}
-            deliveryDay2={deliveryDay2}
+            deliveryDay2={deliveryDay2 ?? ""}
           />
           <Detailer
             id={parseInt(id)}

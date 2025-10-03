@@ -13,6 +13,12 @@ export type Product = {
   category?: { name: string } | undefined;
 };
 
+export type ProductDetails = {
+  product: Product;
+  deliveryDay: string;
+  deliveryDay2?: string;
+};
+
 export type Category = {
   id: number;
   name: string;
