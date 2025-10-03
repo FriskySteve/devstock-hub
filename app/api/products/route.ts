@@ -4,7 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
+    // const { searchParams } = new URL(req.url);
+    const searchParams = req.nextUrl.searchParams;
     const categoryIds = searchParams
       .get("categoryId")
       ?.split(" ")
@@ -15,6 +16,7 @@ export async function GET(req: NextRequest) {
     const maxPrice = searchParams.get("maxPrice")
       ? Number(searchParams.get("maxPrice")!)
       : undefined;
+
     const sortBy = searchParams.get("sortBy") || "latest";
     const show = Number(searchParams.get("show")) || 3;
     const page = Number(searchParams.get("page")) || 1;
