@@ -5,11 +5,10 @@ import z from "zod";
 export type Product = {
   id: number;
   name: string;
-  description: string;
+  description?: string;
   price: number;
   stock: number;
   images: string[];
-  // category?: { name: string };
   category?: { name: string } | undefined;
 };
 

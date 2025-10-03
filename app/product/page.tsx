@@ -1,56 +1,66 @@
-"use client";
 import Filter from "@/components/product/Filter";
 import Pagination from "@/components/product/ProductPagination";
 import ProductGrid from "@/components/product/ProductGrid";
 import Sorter from "@/components/product/Sorter";
-import { Category } from "@/lib/types";
-import type { Product } from "@/lib/types";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { getCategories, getData } from "@/services/getData";
+import { getCategories } from "@/services/getData";
+import { productManager } from "@/services/productManager";
 
-export default function Product() {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
-  const [paginationUrl, setPaginationUrl] = useState<string>("");
-  const searchParams = useSearchParams();
-  useEffect(() => {
-    const fetchCategories = async () => {
-      // const data = await getData("/api/categories");
-      const data = await getCategories();
-      setCategories(data);
-    };
+export default async function Product({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const filterParams = await searchParams;
+  const categoriesData = await getCategories();
 
-    const fetchProducts = async () => {
-      const params = new URLSearchParams(searchParams);
-      const { products, page, totalPages } = await getData(
-        `/api/products?${params.toString()}`
-      );
+  const categoryIds = filterParams.categoryId
+    ? String(filterParams.categoryId)
+        .split(" ")
+        .map((id) => parseInt(id))
+    : undefined;
 
-      setProducts(products);
-      setPage(page);
-      setTotalPages(totalPages);
+  const minPrice = filterParams.minPrice
+    ? Number(filterParams.minPrice)
+    : undefined;
 
-      params.delete("page");
-      setPaginationUrl(`/product?${params.toString()}`);
-    };
+  const maxPrice = filterParams.maxPrice
+    ? Number(filterParams.maxPrice)
+    : undefined;
 
-    fetchCategories();
-    fetchProducts();
-  }, [searchParams]);
+  const sortBy = filterParams.sortBy ? String(filterParams.sortBy) : "latest";
+
+  const show = filterParams.show ? Number(filterParams.show) : 3;
+
+  const page = filterParams.page ? Number(filterParams.page) : 1;
+
+  const { products, totalPages, currentPage } =
+    await productManager.getProducts({
+      categoryIds,
+      minPrice,
+      maxPrice,
+      sortBy,
+      show,
+      page,
+    });
+
+  const params = new URLSearchParams(filterParams as Record<string, string>);
+  params.delete("page");
+  const paginationUrl = `/product?${params.toString()}`;
 
   return (
     <div className="flex px-[40px] border-t border-[var(--gray-200)] my-10">
-      <aside className="w-1/5 py-10 px-10 border-r border-[var(--gray-200)] mr-10">
-        <Filter data={categories} />
-      </aside>
-      <main className="w-4/5 py-10">
+      <div className="w-1/5 py-10 px-10 border-r border-[var(--gray-200)] mr-10">
+        <Filter data={categoriesData} />
+      </div>
+      <div className="w-4/5 py-10">
         <Sorter />
         <ProductGrid data={products} />
-        <Pagination page={page} totalPages={totalPages} url={paginationUrl} />
-      </main>
+        <Pagination
+          page={currentPage}
+          totalPages={totalPages}
+          url={paginationUrl}
+        />
+      </div>
     </div>
   );
 }
