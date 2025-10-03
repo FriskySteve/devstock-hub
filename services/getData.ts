@@ -1,3 +1,5 @@
+import prisma from "@/lib/prisma";
+
 // export async function getData(url: string) {
 //   const baseUrl = process.env.DB_SERVER;
 
@@ -6,6 +8,16 @@
 
 //   return data;
 // }
+
+export async function getCategories() {
+  return await prisma.category.findMany();
+}
+export async function getProducts() {
+  return await prisma.product.findMany();
+}
+export async function getBrands() {
+  return await prisma.brand.findMany();
+}
 
 export async function getData(url: string) {
   const baseUrl = process.env.DB_SERVER || "http://localhost:3000";

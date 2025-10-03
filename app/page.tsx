@@ -5,6 +5,7 @@ import { getData } from "@/services/getData";
 import { shuffle } from "@/lib/utils";
 import prisma from "@/lib/prisma";
 import { Product } from "@/lib/types";
+import { getBrands, getCategories, getProducts } from "@/services/getData";
 
 export default async function Home() {
   // const categoriesData = await getData("/api/categories");
@@ -14,11 +15,10 @@ export default async function Home() {
   // if (!categoriesData || !brandsData || !recommendedProductsData)
   //   return <p>Error while fetching data. Please wait.</p>;
 
-  const categories = await prisma.category.findMany();
-  const brands = await prisma.brand.findMany();
-  const recommendedProducts = await prisma.product.findMany({});
+  const categories = await getCategories();
+  const brands = await getBrands();
+  const recommendedProducts = await getProducts();
 
-  // console.log("RECOMMENDED PRODUCTS:", recommendedProductsData.products);
   const productsWithNumberPrice = recommendedProducts.map((product) => ({
     ...product,
     price: Number(product.price),
