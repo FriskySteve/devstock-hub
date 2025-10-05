@@ -1,6 +1,31 @@
 import { loginSchema } from "@/schema/loginSchema";
 import { createAccountSchema } from "@/schema/createAccountSchema";
 import z from "zod";
+import NextAuth from "next-auth";
+
+declare module "next-auth" {
+  interface User {
+    id: string;
+    email: string | null;
+    phone: string | null;
+  }
+
+  interface Session {
+    user: {
+      id: string;
+      email: string;
+      phone: string;
+    };
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+    email: string;
+    phone: string;
+  }
+}
 
 export type Product = {
   id: number;

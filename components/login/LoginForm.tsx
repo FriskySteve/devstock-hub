@@ -10,6 +10,7 @@ import { PasswordInput } from "../register/PasswordInput";
 import { useRouter } from "next/navigation";
 import { CheckboxWithText } from "../register/CheckBoxWithText";
 import { signIn } from "next-auth/react";
+
 export default function CreateAccountForm() {
   const passwordVisibility = usePasswordVisibility();
   const router = useRouter();

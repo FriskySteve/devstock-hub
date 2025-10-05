@@ -17,8 +17,15 @@ const nextConfig: NextConfig = {
   //   return config;
   // },
   /* config options here */
+  // images: {
+  //   domains: ["i.ibb.co", "imgbb.com", "i.postimg.cc"],
+  // },
   images: {
-    domains: ["i.ibb.co", "imgbb.com", "i.postimg.cc"],
+    remotePatterns: [
+      { protocol: "https", hostname: "i.ibb.co" },
+      { protocol: "https", hostname: "imgbb.com" },
+      { protocol: "https", hostname: "i.postimg.cc" },
+    ],
   },
 };
 export default nextConfig;

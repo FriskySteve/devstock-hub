@@ -1,58 +1,88 @@
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
+import { authService } from "@/services/auth";
+// import { authOptions } from "@/lib/auth";
 import { handleError } from "@/lib/utils";
-// import prisma from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-
     const { emailOrMobile, password } = body;
+    console.log("Login: ", emailOrMobile, password);
+    const result = await authService.login({ emailOrMobile, password });
+    console.log("Login result: ", result);
 
-    if (!emailOrMobile || !password) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Email or mobile and password are required",
-        },
-        { status: 400 }
-      );
-    }
-    const { default: prisma } = await import("@/lib/prisma");
-    const user = await prisma.user.findFirst({
-      where: {
-        OR: [{ email: emailOrMobile }, { phone: emailOrMobile }],
-      },
-    });
-
-    if (!user) {
-      return NextResponse.json(
-        { success: false, message: "User not found" },
-        { status: 404 }
-      );
+    if (!result.success) {
+      // Możesz dostosować status na podstawie treści błędu
+      const status =
+        result.message === "User not found"
+          ? 404
+          : result.message === "Invalid credentials"
+          ? 401
+          : 400;
+      return NextResponse.json(result, { status });
     }
 
-    const passwordMatches = await bcrypt.compare(password, user.password);
-
-    if (!passwordMatches) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: `Invalid credentials`,
-        },
-        { status: 401 }
-      );
-    }
-
-    return NextResponse.json(
-      {
-        success: true,
-        message: "Login successful",
-        user: { id: user.id, email: user.email },
-      },
-      { status: 200 }
-    );
+    return NextResponse.json(result, { status: 200 });
   } catch (error) {
     return handleError(error);
   }
 }
+
+// import { NextRequest, NextResponse } from "next/server";
+// import bcrypt from "bcryptjs";
+// import { handleError } from "@/lib/utils";
+// // import prisma from "@/lib/prisma";
+
+// export async function POST(req: NextRequest) {
+//   try {
+//     const body = await req.json();
+
+//     const { emailOrMobile, password } = body;
+
+//     if (!emailOrMobile || !password) {
+//       return NextResponse.json(
+//         {
+//           success: false,
+//           message: "Email or mobile and password are required",
+//         },
+//         { status: 400 }
+//       );
+//     }
+//     const { default: prisma } = await import("@/lib/prisma");
+//     const user = await prisma.user.findFirst({
+//       where: {
+//         OR: [{ email: emailOrMobile }, { phone: emailOrMobile }],
+//       },
+//     });
+
+//     if (!user) {
+//       return NextResponse.json(
+//         { success: false, message: "User not found" },
+//         { status: 404 }
+//       );
+//     }
+
+//     const passwordMatches = await bcrypt.compare(password, user.password);
+
+//     if (!passwordMatches) {
+//       return NextResponse.json(
+//         {
+//           success: false,
+//           message: `Invalid credentials`,
+//         },
+//         { status: 401 }
+//       );
+//     }
+
+//     return NextResponse.json(
+//       {
+//         success: true,
+//         message: "Login successful",
+//         user: { id: user.id, email: user.email },
+//       },
+//       { status: 200 }
+//     );
+//   } catch (error) {
+//     return handleError(error);
+//   }
+// }
