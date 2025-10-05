@@ -2,17 +2,12 @@ import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 import prisma from "./lib/prisma";
 
-const authRoutes = ["/login", "/register", "/register-success"];
-const publicRoutes = ["/", "/product"];
+const publicRoutes = ["/login", "/register", "/register-success"];
 
 export default withAuth(
   async function middleware(req) {
     const { pathname } = req.nextUrl;
     const token = req.nextauth.token;
-
-    if (!token?.email) {
-      return;
-    }
 
     if (token?.email) {
       try {
@@ -31,24 +26,22 @@ export default withAuth(
       }
     }
 
-    if (token && authRoutes.some((route) => pathname.startsWith(route))) {
+    if (token && publicRoutes.some((route) => pathname.startsWith(route))) {
       return NextResponse.redirect(new URL("/", req.url));
     }
+
+    return NextResponse.next();
   },
   {
     callbacks: {
       authorized: ({ token, req }) => {
         const { pathname } = req.nextUrl;
 
-        if (
-          !token &&
-          (authRoutes.some((route) => pathname.startsWith(route)) ||
-            publicRoutes.some((route) => pathname.startsWith(route)))
-        ) {
-          return true;
+        if (!token) {
+          return publicRoutes.some((route) => pathname.startsWith(route));
         }
 
-        return !!token;
+        return true;
       },
     },
   }
