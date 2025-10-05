@@ -1,92 +1,86 @@
-// import bcrypt from "bcryptjs";
-// import { NextAuthOptions } from "next-auth";
-// import CredentialsProvider from "next-auth/providers/credentials";
+import { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { authService } from "@/services/auth";
 
-// export async function hashPassword(password: string): Promise<string> {
-//   const saltRounds = 12;
-//   return await bcrypt.hash(password, saltRounds);
-// }
+export const authOptions: NextAuthOptions = {
+  providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        emailOrMobile: {
+          label: "Email or Mobile",
+          type: "text",
+          placeholder: "email@example.com or +48123456789",
+        },
+        password: {
+          label: "Password",
+          type: "password",
+        },
+      },
+      async authorize(credentials) {
+        try {
+          if (!credentials?.emailOrMobile || !credentials?.password) {
+            console.log("Missing credentials");
+            return null;
+          }
 
-// export async function verifyPassword(
-//   password: string,
-//   hashedPassword: string
-// ): Promise<boolean> {
-//   return await bcrypt.compare(password, hashedPassword);
-// }
+          console.log("Attempting login for:", credentials.emailOrMobile);
 
-// export const authOptions: NextAuthOptions = {
-//   providers: [
-//     CredentialsProvider({
-//       name: "credentials",
-//       credentials: {
-//         emailOrMobile: { label: "Email or mobile phone number", type: "text" },
-//         password: { label: "Password", type: "password" },
-//       },
-//       async authorize(credentials) {
-//         if (!credentials?.emailOrMobile || !credentials?.password) {
-//           console.log("Credentials: ", credentials);
-//           return null;
-//         }
+          const result = await authService.login({
+            emailOrMobile: credentials.emailOrMobile,
+            password: credentials.password,
+          });
 
-//         try {
-//           const response = await fetch(
-//             `${process.env.NEXTAUTH_URL}/api/auth/login`,
-//             {
-//               method: "POST",
-//               headers: { "Content-Type": "application/json" },
-//               body: JSON.stringify({
-//                 emailOrMobile: credentials.emailOrMobile,
-//                 password: credentials.password,
-//               }),
-//             }
-//           );
+          console.log("Login result:", {
+            success: result.success,
+            message: result.message,
+          });
 
-//           if (!response.ok) {
-//             return null;
-//           }
+          if (!result.success || !result.user) {
+            console.log("Login failed:", result.message);
+            return null;
+          }
 
-//           const result = await response.json();
+          const user = {
+            id: String(result.user.id),
+            email: result.user.email,
+            phone: result.user.phone,
+          };
 
-//           if (!result?.user?.id) {
-//             return null;
-//           }
-
-//           return {
-//             id: result.user.id,
-//             email: result.user.email,
-//             name: result.user.name || result.user.phone || result.user.email,
-//           };
-//         } catch (error) {
-//           console.error("Auth error:", error);
-//           return null;
-//         }
-//       },
-//     }),
-//   ],
-//   pages: {
-//     signIn: "/login",
-//   },
-//   callbacks: {
-//     async jwt({ token, user }) {
-//       if (user) {
-//         token.id = user.id ? String(user.id) : undefined;
-//         token.email = String(user.email);
-//       }
-//       return token;
-//     },
-//     async session({ session, token }) {
-//       if (token) {
-//         session.user = {
-//           email: String(token.email),
-//           name: token.name ?? "Unkown",
-//           image: token.picture ?? undefined,
-//         };
-//       }
-//       return session;
-//     },
-//   },
-//   session: {
-//     strategy: "jwt",
-//   },
-//   secret: process.env.AUTH_SECRET,
-// };
+          console.log("Login successful, returning user:", user.id);
+          return user;
+        } catch (error) {
+          console.error("Authorize error:", error);
+          return null;
+        }
+      },
+    }),
+  ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id ? String(user.id) : "";
+        token.email = user.email ? String(user.email) : "";
+        token.phone = user.phone ? String(user.phone) : "";
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token && session.user) {
+        session.user.id = token.id as string;
+        session.user.email = token.email as string;
+      }
+      return session;
+    },
+  },
+  pages: {
+    signIn: "/auth/signin",
+    error: "/auth/error",
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+  debug: true,
+};

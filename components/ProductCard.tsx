@@ -33,7 +33,8 @@ const ProductCard = ({ data }: ProductCardProps) => {
             priority
           />
         </div>
-        <Badge categoryName={data.name} />
+
+        <Badge categoryName={data.category?.name ?? "Uncategorized"} />
         <p className="text-[18px] text-[var(--neutral-900)] pt-[16px] pb-[8px]">
           {data.name}
         </p>

@@ -35,6 +35,7 @@ export type Product = {
   stock: number;
   images: string[];
   category?: { name: string } | undefined;
+  // category: { name: string };
 };
 
 export type ProductDetails = {

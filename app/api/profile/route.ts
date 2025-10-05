@@ -1,7 +1,9 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+
+export const runtime = "nodejs";
 
 export async function GET() {
   try {
@@ -17,9 +19,9 @@ export async function GET() {
     const userEmail = session.user.email;
 
     if (!userEmail) {
-      console.log("No user ID in session");
+      console.log("No user email in session");
       return NextResponse.json(
-        { error: "No user ID in session" },
+        { error: "No user email in session" },
         { status: 401 }
       );
     }
@@ -34,6 +36,7 @@ export async function GET() {
         id: true,
         email: true,
         phone: true,
+        country: true,
         createdAt: true,
       },
     });
@@ -51,14 +54,22 @@ export async function GET() {
     } catch (error) {
       console.log("Orders table might not exist:", error);
       return NextResponse.json({
-        ...userExists,
-        orders: [],
+        success: true,
+        user: {
+          ...userExists,
+          orders: [],
+        },
       });
     }
 
     const user = await prisma.user.findUnique({
       where: { email: userEmail },
-      include: {
+      select: {
+        id: true,
+        email: true,
+        phone: true,
+        country: true,
+        createdAt: true,
         orders: {
           orderBy: { createdAt: "desc" },
           include: {
@@ -69,6 +80,7 @@ export async function GET() {
                     id: true,
                     name: true,
                     images: true,
+                    price: true,
                   },
                 },
               },
@@ -83,14 +95,19 @@ export async function GET() {
       user?.orders?.length || 0
     );
 
-    return NextResponse.json(user);
+    return NextResponse.json({
+      success: true,
+      user,
+    });
   } catch (error) {
     console.error("Profile API Error:", error);
 
     return NextResponse.json(
       {
+        success: false,
         error: "Failed to fetch user data",
-        details: process.env.NODE_ENV === "development" ? error : undefined,
+        details:
+          process.env.NODE_ENV === "development" ? String(error) : undefined,
       },
       { status: 500 }
     );

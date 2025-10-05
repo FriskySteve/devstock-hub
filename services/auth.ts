@@ -2,6 +2,11 @@ import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
 import { LoginParams, LoginResult } from "@/lib/types";
 
+export async function hashPassword(password: string): Promise<string> {
+  const saltRounds = 12;
+  return await bcrypt.hash(password, saltRounds);
+}
+
 export class AuthService {
   async login(params: LoginParams): Promise<LoginResult> {
     const { emailOrMobile, password } = params;

@@ -1,8 +1,9 @@
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth";
 import { NextResponse, NextRequest } from "next/server";
-import type { CartItem } from "@/lib/types";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   try {
@@ -30,6 +31,7 @@ export async function POST(req: NextRequest) {
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
     });
+
     if (!user) {
       return NextResponse.json({ message: "Invalid user" }, { status: 404 });
     }
@@ -45,8 +47,6 @@ export async function POST(req: NextRequest) {
         include: { items: true },
       });
     }
-
-    if (!cart) return;
 
     const existingItem = cart.items.find(
       (item) => item.productId === productId
@@ -77,7 +77,10 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    return NextResponse.json({ message: "Product added to cart." });
+    return NextResponse.json({
+      success: true,
+      message: "Product added to cart.",
+    });
   } catch (error) {
     console.error("POST /api/cart error:", error);
     return NextResponse.json(
@@ -124,14 +127,18 @@ export async function GET() {
       },
     });
 
-    if (!cart) {
-      return NextResponse.json(
-        { message: "There are no products in cart" },
-        { status: 404 }
-      );
+    if (!cart || cart.items.length === 0) {
+      return NextResponse.json({
+        items: [],
+        message: "Cart is empty",
+      });
     }
 
-    return NextResponse.json(cart);
+    return NextResponse.json({
+      success: true,
+      items: cart.items,
+      cartId: cart.id,
+    });
   } catch (error) {
     console.error("GET /api/cart error:", error);
     return NextResponse.json(
@@ -186,7 +193,11 @@ export async function PATCH(req: NextRequest) {
       data: { quantity },
     });
 
-    return NextResponse.json(updatedItem);
+    return NextResponse.json({
+      success: true,
+      item: updatedItem,
+      message: "Cart item updated",
+    });
   } catch (error) {
     console.error("PATCH /api/cart error:", error);
     return NextResponse.json(
@@ -231,7 +242,10 @@ export async function DELETE(req: NextRequest) {
 
     await prisma.cartItem.delete({ where: { id: itemId } });
 
-    return NextResponse.json({ message: "Item deleted from cart" });
+    return NextResponse.json({
+      success: true,
+      message: "Item deleted from cart",
+    });
   } catch (error) {
     console.error("DELETE /api/cart error:", error);
     return NextResponse.json(
