@@ -8,6 +8,7 @@ import Products from "@/components/cart/Products";
 import CartSummary from "@/components/cart/CartSummary";
 import Loader from "@/components/Loader";
 import Breadcrumb from "@/components/Breadcrumb";
+import { Button } from "@/components/shared/Button";
 
 export default function CartPage() {
   const { data: session, status } = useSession();
@@ -86,18 +87,19 @@ export default function CartPage() {
       <div className="px-[40px] py-[40px]">
         <Breadcrumb />
         <div className="flex flex-col items-center justify-center min-h-[400px]">
-          <p className="text-[28px] text-neutral-900 font-semibold text-center mb-6">
+          <p className="text-[28px] text-[var(--neutral-900)] font-semibold text-center mb-6">
             Your cart is empty
           </p>
-          <p className="text-neutral-600 mb-8">
+          <p className="text-[var(--neutral-600)] mb-8">
             Add some products to your cart to get started!
           </p>
-          <button
-            onClick={() => router.push("/products")}
-            className="bg-primary-500 text-white px-8 py-3 rounded-md hover:bg-primary-600 transition-colors"
+          <Button
+            onClick={() => router.push("/product")}
+            variant="fill"
+            size="m"
           >
             Continue Shopping
-          </button>
+          </Button>
         </div>
       </div>
     );
