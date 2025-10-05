@@ -14,6 +14,7 @@ import { CheckboxWithText } from "./CheckBoxWithText";
 import { useRouter } from "next/navigation";
 import useFetch from "@/hooks/useFetch";
 import { RegisterResponse } from "@/lib/types";
+import { enqueueSnackbar } from "notistack";
 
 export default function CreateAccountForm() {
   const passwordVisibility = usePasswordVisibility();
@@ -38,12 +39,18 @@ export default function CreateAccountForm() {
       const response = await postData("/api/auth/register", data);
       setError(null);
       if (error) {
-        console.error("Registration error:", error);
+        enqueueSnackbar(`Registration error: ${error}`, {
+          variant: "error",
+        });
       } else if (response?.success) {
-        console.log("Registration successful:", response);
+        enqueueSnackbar("Registration successful.", {
+          variant: "success",
+        });
         router.push("/register/success");
       } else {
-        console.error("Registration failed:", response?.message);
+        enqueueSnackbar(`Registration failed: ${response?.message}`, {
+          variant: "error",
+        });
       }
     } catch (error) {
       console.error("Error during form submission:", error);

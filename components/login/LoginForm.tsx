@@ -10,6 +10,7 @@ import { PasswordInput } from "../register/PasswordInput";
 import { useRouter } from "next/navigation";
 import { CheckboxWithText } from "../register/CheckBoxWithText";
 import { signIn } from "next-auth/react";
+import { enqueueSnackbar } from "notistack";
 
 export default function CreateAccountForm() {
   const passwordVisibility = usePasswordVisibility();
@@ -47,6 +48,9 @@ export default function CreateAccountForm() {
       !phoneRegex.test(data.emailOrMobile)
     ) {
       setErrorMessage("Email or Phone Number is not valid.");
+      enqueueSnackbar("Email or Phone Number is not valid.", {
+        variant: "error",
+      });
       return;
     }
 
@@ -72,12 +76,18 @@ export default function CreateAccountForm() {
 
       if (result?.error) {
         setErrorMessage("Email/Phone Number or Password Incorrect");
+        enqueueSnackbar(errorMessage, {
+          variant: "error",
+        });
         handleContinue();
         reset();
         return;
       }
 
       if (result?.ok) {
+        enqueueSnackbar("Login successful.", {
+          variant: "success",
+        });
         router.push("/");
         router.refresh();
       }

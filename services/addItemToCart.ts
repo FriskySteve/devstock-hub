@@ -1,3 +1,5 @@
+import { enqueueSnackbar } from "notistack";
+
 export async function addItemToCart(productId: number, quantity: number = 1) {
   try {
     const res = await fetch("/api/cart", {
@@ -14,6 +16,9 @@ export async function addItemToCart(productId: number, quantity: number = 1) {
       return null;
     }
 
+    enqueueSnackbar("Product Successfully Added to Cart", {
+      variant: "success",
+    });
     return data;
   } catch (e) {
     console.log(e, "addItemToCart function failed.");
