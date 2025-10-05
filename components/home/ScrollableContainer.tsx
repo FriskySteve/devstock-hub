@@ -62,7 +62,7 @@ export default function ScrollableContainer({
   };
 
   let content;
-  if (title === "Brands") {
+  if (title === "Brand") {
     content = (items as Brand[]).map((item) => (
       <div key={item.name} className="w-[220px] ">
         <LittleCard name={item.name} iconUrl={item.logoUrl} />
@@ -70,7 +70,7 @@ export default function ScrollableContainer({
     ));
   } else {
     content = (items as Product[]).map((item) => (
-      <div key={item.id} className="w-[300px] ">
+      <div key={item.id} className="w-[300px]">
         <ProductCard data={item} />
       </div>
     ));

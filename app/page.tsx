@@ -23,7 +23,7 @@ export default async function Home() {
         items={shuffledRandomProducts}
         title="Recomendation"
       />
-      <ScrollableContainer items={brands} title="Brands" />
+      <ScrollableContainer items={brands} title="Brand" />
     </div>
   );
 }

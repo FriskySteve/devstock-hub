@@ -1,11 +1,21 @@
 import prisma from "@/lib/prisma";
-import { ProductDetails } from "@/lib/types";
+import { ProductDetails, Product } from "@/lib/types";
 
 export async function getCategories() {
   return await prisma.category.findMany();
 }
-export async function getAllProducts() {
-  return await prisma.product.findMany();
+export async function getAllProducts(): Promise<Product[]> {
+  const products = await prisma.product.findMany({
+    include: {
+      category: {
+        select: { name: true },
+      },
+    },
+  });
+  return products.map((product) => ({
+    ...product,
+    price: product.price.toNumber(),
+  }));
 }
 
 export async function getProductById(id: number): Promise<ProductDetails> {

@@ -17,7 +17,7 @@ export default function CategoryContainer({
   return (
     <div className="flex flex-col px-10 gap-8 items-center md:items-start">
       <h4 className="text-xl font-medium text-[var(--neutral-900)]">
-        Categories
+        Category
       </h4>
       <div className="flex md:flex-row flex-col md:justify-between items-center gap-8 w-full ">
         {categories.map((category) => (
