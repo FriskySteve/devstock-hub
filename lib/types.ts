@@ -105,5 +105,25 @@ export type CartItem = {
   };
 };
 
+export type RegisterResponse = {
+  success: boolean;
+  message?: string;
+};
+
+export interface LoginParams {
+  emailOrMobile: string;
+  password: string;
+}
+
+export interface LoginResult {
+  success: boolean;
+  message: string;
+  user?: {
+    id: number;
+    email: string | null;
+    phone: string | null;
+  };
+}
+
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type CreateAccountFormData = z.infer<typeof createAccountSchema>;

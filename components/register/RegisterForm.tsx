@@ -13,11 +13,7 @@ import { CountrySelect } from "./CountrySelect";
 import { CheckboxWithText } from "./CheckBoxWithText";
 import { useRouter } from "next/navigation";
 import useFetch from "@/hooks/useFetch";
-
-type RegisterResponse = {
-  success: boolean;
-  message?: string;
-};
+import { RegisterResponse } from "@/lib/types";
 
 export default function CreateAccountForm() {
   const passwordVisibility = usePasswordVisibility();
@@ -39,7 +35,7 @@ export default function CreateAccountForm() {
 
   const onSubmit = async (data: CreateAccountFormData) => {
     try {
-      const response = await postData("/api/register", data);
+      const response = await postData("/api/auth/register", data);
       setError(null);
       if (error) {
         console.error("Registration error:", error);

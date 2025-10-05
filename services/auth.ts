@@ -1,20 +1,6 @@
 import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
-
-export interface LoginParams {
-  emailOrMobile: string;
-  password: string;
-}
-
-export interface LoginResult {
-  success: boolean;
-  message: string;
-  user?: {
-    id: number;
-    email: string | null;
-    phone: string | null;
-  };
-}
+import { LoginParams, LoginResult } from "@/lib/types";
 
 export class AuthService {
   async login(params: LoginParams): Promise<LoginResult> {
