@@ -62,6 +62,13 @@ export default function CartPage() {
     }
   }, [status, router]);
 
+  const handleCheckout = () => {
+    if (selected.length > 0) {
+      sessionStorage.setItem("checkout_items", JSON.stringify(selected));
+      router.push("/checkout");
+    }
+  };
+
   if (status === "loading" || isLoading) {
     return <Loader />;
   }
@@ -75,7 +82,7 @@ export default function CartPage() {
             onClick={fetchCart}
             className="bg-primary-500 text-white px-6 py-2 rounded-md hover:bg-primary-600"
           >
-            Try Again
+            Spróbuj ponownie
           </button>
         </div>
       </div>
@@ -91,14 +98,15 @@ export default function CartPage() {
             Your cart is empty
           </p>
           <p className="text-[var(--neutral-600)] mb-8">
-            Add some products to your cart to get started!
+            Add products to your cart to get started!
           </p>
           <Button
             onClick={() => router.push("/product")}
             variant="fill"
-            size="m"
+            size="xl"
+            className="mx-auto w-1/3"
           >
-            Continue Shopping
+            Continue shopping
           </Button>
         </div>
       </div>
@@ -121,7 +129,13 @@ export default function CartPage() {
           fetchCart={fetchCart}
           cart={cart}
         />
-        <CartSummary totalQuantity={totalQty} totalPrice={totalPrice} />
+        <CartSummary
+          totalQuantity={totalQty}
+          totalPrice={totalPrice}
+          selectedItems={selected}
+          disabled={selected.length === 0}
+          onCheckout={handleCheckout}
+        />
       </div>
     </div>
   );

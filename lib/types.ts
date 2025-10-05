@@ -89,22 +89,23 @@ export interface OrderItem {
   };
 }
 
-export type CartItem = {
+export interface CartItem {
   id: number;
   cartId: number;
   productId: number;
   quantity: number;
   addedPrice: number;
   product: {
+    id: number;
     name: string;
     price: number;
-    images: string;
-    stock: number;
-    category: {
+    images: string[];
+    category?: {
+      id: number;
       name: string;
     };
   };
-};
+}
 
 export type RegisterResponse = {
   success: boolean;
