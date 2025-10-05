@@ -1,9 +1,7 @@
-// app/api/auth/[...nextauth]/route.ts
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { authService } from "@/services/auth";
 
-// Force Node.js runtime instead of Edge
 export const runtime = "nodejs";
 
 export const authOptions: NextAuthOptions = {
@@ -25,7 +23,7 @@ export const authOptions: NextAuthOptions = {
         try {
           if (!credentials?.emailOrMobile || !credentials?.password) {
             console.log("Missing credentials");
-            return null; // Return null instead of throwing
+            return null;
           }
 
           console.log("Attempting login for:", credentials.emailOrMobile);
@@ -42,12 +40,11 @@ export const authOptions: NextAuthOptions = {
 
           if (!result.success || !result.user) {
             console.log("Login failed:", result.message);
-            return null; // Return null for failed authentication
+            return null;
           }
 
-          // Return user object - NextAuth will handle session
           const user = {
-            id: String(result.user.id), // Convert to string for NextAuth
+            id: String(result.user.id),
             email: result.user.email,
             phone: result.user.phone,
           };
@@ -56,14 +53,13 @@ export const authOptions: NextAuthOptions = {
           return user;
         } catch (error) {
           console.error("Authorize error:", error);
-          return null; // Return null on error
+          return null;
         }
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
-      // Initial sign in
       if (user) {
         token.id = user.id;
         token.email = user.email as string;
@@ -72,7 +68,6 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      // Add user info to session
       if (token && session.user) {
         session.user.id = token.id as string;
         session.user.email = token.email as string;
@@ -87,13 +82,12 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 30 * 24 * 60 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
-  debug: true, // Enable debug mode to see detailed logs
+  debug: true,
 };
 
 const handler = NextAuth(authOptions);
 
-// Export handlers for App Router
 export { handler as GET, handler as POST };
