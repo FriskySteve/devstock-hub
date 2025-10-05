@@ -1,0 +1,47 @@
+import ProductActions from "@/components/product/details/ProductActions";
+import Gallery from "@/components/product/details/Gallery";
+import { Description } from "@/components/product/details/Description";
+import Breadcrumb from "@/components/Breadcrumb";
+import { getProductById } from "@/services/getData";
+
+type Params = Promise<{ id: string }>;
+
+export default async function ProductDetails({ params }: { params: Params }) {
+  try {
+    const { id } = await params;
+    const { product, deliveryDay, deliveryDay2 } = await getProductById(
+      parseInt(id)
+    );
+
+    return (
+      <div className="p-[40px]">
+        <div>
+          <Breadcrumb productName={product.name} />
+        </div>
+        <div className="flex justify-between gap-x-[32px]">
+          <Gallery name={product.name} images={product.images} />
+          <Description
+            name={product.name}
+            category={product.category?.name ?? ""}
+            desc={product.description ?? ""}
+            price={product.price}
+            deliveryDay={deliveryDay}
+            deliveryDay2={deliveryDay2 ?? ""}
+          />
+          <ProductActions
+            id={parseInt(id)}
+            stock={product.stock}
+            price={product.price}
+          />
+        </div>
+      </div>
+    );
+  } catch (error) {
+    console.error("Error loading product details:", error);
+    return (
+      <div className="text-red-300">
+        Wystąpił błąd podczas ładowania produktu.
+      </div>
+    );
+  }
+}
