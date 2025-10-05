@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CartItem } from "@/lib/types";
+import { Button } from "../shared/Button";
 
 interface CartSummaryProps {
   totalQuantity: number;
@@ -68,13 +69,15 @@ export default function CartSummary({
         </div>
       </div>
 
-      <button
+      <Button
         onClick={onCheckout || handleCheckout}
         disabled={disabled || isProcessing || totalQuantity === 0}
-        className="w-full bg-[var(--primary-500)] hover:bg-[var(--primary-600)] text-white font-semibold py-4 rounded-md transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+        variant="fill"
+        size="xl"
+        className="w-full"
       >
         {isProcessing ? "Processing..." : "Proceed to Checkout"}
-      </button>
+      </Button>
     </div>
   );
 }
